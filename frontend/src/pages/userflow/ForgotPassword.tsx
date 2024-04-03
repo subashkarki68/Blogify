@@ -26,10 +26,11 @@ function ForgotPassword() {
     const [email, setEmail] = useState(state?.email || '')
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const [success, setSuccess] = useState<SuccessFailureStatus>({
-        status: false,
-        message: { title: '', body: '' },
-    })
+    // const [success, setSuccess] = useState<SuccessFailureStatus>({
+    //     status: false,
+    //     message: { title: '', body: '' },
+    // })
+
     const [failure, setFailure] = useState<SuccessFailureStatus>({
         status: false,
         message: { title: '', body: '' },

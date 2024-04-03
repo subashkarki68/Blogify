@@ -28,7 +28,8 @@ function VerifyPasswordToken() {
     const [isVerifying, setIsVerifying] = useState(false)
     const fpSuccess = localStorage.getItem('fpSuccess')
     const fpSuccessOBJ = fpSuccess ? JSON.parse(fpSuccess) : null
-    const [success, setSuccess] = useState(fpSuccessOBJ || '')
+    // const [success, setSuccess] = useState(fpSuccessOBJ || '')
+    const success = fpSuccessOBJ || ''
     const [isWrongToken, setIsWrongToken] = useState(false)
     const [tokenVerified, setTokenVerified] = useState(false)
     const [password, setPassword] = useState<Password>({
