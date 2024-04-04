@@ -23,13 +23,13 @@ interface SuccessFailureStatus {
 function Login() {
     const location = useLocation()
     const registrationPayload = location?.state || ''
+    const { passwordReset } = location.state || ''
 
-    const [email, setEmail] = useState<string>(
-        registrationPayload ? registrationPayload.email : '',
-    )
-    const [password, setPassword] = useState<string>(
-        registrationPayload ? registrationPayload.password : '',
-    )
+    const initialEmail =
+        registrationPayload?.email || passwordReset?.email || ''
+
+    const [email, setEmail] = useState<string>(initialEmail)
+    const [password, setPassword] = useState<string>('')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [success, setSuccess] = useState<SuccessFailureStatus>({
         status: false,
@@ -85,6 +85,18 @@ function Login() {
             <CardHeader className="space-y-2 text-center">
                 <CardTitle className="text-2xl font-bold">Login</CardTitle>
                 <CardDescription>Use your email to login</CardDescription>
+                {passwordReset && (
+                    <Alert
+                        variant={'default'}
+                        className="border-2 border-green-900 text-green-900 dark:border-green-400 dark:text-green-400"
+                    >
+                        <CheckCircleIcon className="h-5 w-5 stroke-green-900 dark:stroke-green-400" />
+                        <AlertTitle>Password reset successfully</AlertTitle>
+                        <AlertDescription>
+                            Please login with your new password
+                        </AlertDescription>
+                    </Alert>
+                )}
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -95,7 +107,7 @@ function Login() {
                         required
                         type="email"
                         onChange={handleEmailChange}
-                        value={email}
+                        value={email || ''}
                         autoComplete="email"
                     />
                 </div>
@@ -106,7 +118,7 @@ function Login() {
                         required
                         type="password"
                         onChange={handlePasswordChange}
-                        value={password}
+                        value={password || ''}
                     />
                 </div>
                 {success.status && (

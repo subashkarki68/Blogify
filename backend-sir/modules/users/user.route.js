@@ -106,7 +106,7 @@ router.post("/verify-fp-token", async (req, res, next) => {
 
 router.post("/change-forgotten-password", async (req, res, next) => {
   try {
-    const result = await userController.verifyFPToken(req.body);
+    const result = await userController.changeForgottenPassword(req.body);
     res.json({ result });
   } catch (e) {
     next(e);

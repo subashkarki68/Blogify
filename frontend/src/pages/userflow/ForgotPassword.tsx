@@ -36,7 +36,7 @@ function ForgotPassword() {
         message: { title: '', body: '' },
     })
 
-    const handleSubmit = async () => {
+    const handleTokenSubmit = async () => {
         try {
             const { GENERATE_FP } = URLS
 
@@ -110,7 +110,7 @@ function ForgotPassword() {
                     {/* <Button className="w-full" type="submit">
                         Register
                     </Button> */}
-                    <Button onClick={handleSubmit} disabled={isSubmitting}>
+                    <Button onClick={handleTokenSubmit} disabled={isSubmitting}>
                         {isSubmitting ? (
                             <LoaderCircle className="h-5 w-5 animate-spin" />
                         ) : (

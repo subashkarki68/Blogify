@@ -1,6 +1,4 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
     InputOTP,
     InputOTPGroup,
@@ -17,26 +15,26 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import NewPassword from './NewPassword'
 
 interface Password {
     newPassword: string
-    cPassword: string
+    confirmPassword: string
 }
 
 function VerifyPasswordToken() {
     const [token, setToken] = useState('')
-    const [isVerifying, setIsVerifying] = useState(false)
+    const [isTokenVerifying, setIsTokenVerifying] = useState(false)
+    const [isNewPasswordVerifying, setIsNewPasswordVerifying] = useState(false)
+
     const fpSuccess = localStorage.getItem('fpSuccess')
     const fpSuccessOBJ = fpSuccess ? JSON.parse(fpSuccess) : null
     // const [success, setSuccess] = useState(fpSuccessOBJ || '')
     const success = fpSuccessOBJ || ''
     const [isWrongToken, setIsWrongToken] = useState(false)
     const [tokenVerified, setTokenVerified] = useState(false)
-    const [password, setPassword] = useState<Password>({
-        newPassword: '',
-        cPassword: '',
-    })
-    console.log(success)
+
+    const email = success.email || ''
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -51,7 +49,7 @@ function VerifyPasswordToken() {
 
     const handleComplete = async () => {
         try {
-            setIsVerifying(true)
+            setIsTokenVerifying(true)
             const { Verify_FP } = URLS
             const res = await axiosInstance.post(Verify_FP, {
                 email: success.email,
@@ -61,7 +59,6 @@ function VerifyPasswordToken() {
             if (res.status === 200) {
                 setTokenVerified(true)
             }
-            // localStorage.removeItem('fpSuccess')
         } catch (error: any) {
             setTokenVerified(false)
             setIsWrongToken(true)
@@ -81,11 +78,46 @@ function VerifyPasswordToken() {
                 console.error('Error setting up the request:', error.message)
             }
         } finally {
-            setIsVerifying(false)
+            setIsTokenVerifying(false)
         }
     }
 
-    const handleSubmitNP = () => {}
+    const handleNewPasswordSubmit = async (password: Password) => {
+        try {
+            const { Change_Forgotten_Password } = URLS
+            setIsNewPasswordVerifying(true)
+            const res = await axiosInstance.post(Change_Forgotten_Password, {
+                email: success.email,
+                newPassword: password.newPassword,
+                token,
+            })
+            if (res.status === 200) {
+                localStorage.removeItem('fpSuccess')
+                navigate('/user/login', {
+                    state:
+                        { passwordReset: { ...res.data.result, email } } || '',
+                })
+            }
+        } catch (error: any) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error(
+                    'Server responded with error:',
+                    error.response.data,
+                )
+                console.error('Status code:', error.response.status)
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('No response received:', error.request)
+            } else {
+                // Something happened in setting up the request that triggered an error
+                console.error('Error setting up the request:', error.message)
+            }
+        } finally {
+            setIsNewPasswordVerifying(false)
+        }
+    }
 
     return (
         <div className="flex flex-col items-center gap-8">
@@ -113,7 +145,7 @@ function VerifyPasswordToken() {
                     value={token}
                     onChange={(value) => handleChange(value)}
                     onComplete={handleComplete}
-                    disabled={isVerifying || tokenVerified}
+                    disabled={isTokenVerifying || tokenVerified}
                     autoFocus={true}
                 >
                     <InputOTPGroup>
@@ -144,10 +176,10 @@ function VerifyPasswordToken() {
                     </InputOTPGroup>
                 </InputOTP>
                 <div className="h-9 w-9">
-                    {isVerifying && (
+                    {isTokenVerifying && (
                         <LoaderCircle className="h-9 w-9 animate-spin" />
                     )}
-                    {!isVerifying && tokenVerified && (
+                    {!isTokenVerifying && tokenVerified && (
                         <CheckCircle2Icon className="h-9 w-9 stroke-green-900 dark:stroke-green-400" />
                     )}
                     {isWrongToken && (
@@ -156,45 +188,10 @@ function VerifyPasswordToken() {
                 </div>
             </div>
             {tokenVerified && (
-                <div className="flex w-full flex-col gap-4 text-nowrap duration-500 animate-in fade-in zoom-in">
-                    <label htmlFor="newpassword" className="inline-block">
-                        New Password:
-                    </label>
-                    {/* TODO: ADD FORM ELEMENT */}
-                    <Input
-                        name="newpassword"
-                        type="password"
-                        id="newpassword"
-                        placeholder="Enter your new password"
-                        value={password.newPassword}
-                        onChange={(event) =>
-                            setPassword((prev) => ({
-                                ...prev,
-                                newPassword: event.target.value,
-                            }))
-                        }
-                    />
-                    <label
-                        htmlFor="confirmnewpassword"
-                        className="mt-5 inline-block"
-                    >
-                        Confirm Password:
-                    </label>
-                    <Input
-                        name="newpassword"
-                        type="password"
-                        id="confirmnewpassword"
-                        placeholder="Enter your new password again"
-                        value={password.cPassword}
-                        onChange={(event) =>
-                            setPassword((prev) => ({
-                                ...prev,
-                                cPassword: event.target.value,
-                            }))
-                        }
-                    />
-                    <Button type="submit" onClick={handleSubmitNP} />
-                </div>
+                <NewPassword
+                    handleSubmit={handleNewPasswordSubmit}
+                    isLoading={isNewPasswordVerifying}
+                />
             )}
         </div>
     )
