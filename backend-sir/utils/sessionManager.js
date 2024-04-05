@@ -1,4 +1,4 @@
-const { verifyToken } = require("./token");
+const { verifyAccessToken } = require("./token");
 const userModel = require("../modules/users/user.model");
 
 const checkRole = (sysRole) => {
@@ -7,7 +7,7 @@ const checkRole = (sysRole) => {
       console.log("checkROle", req.body);
       const token = req.headers.access_token || null;
       if (!token) throw new Error("Token missing");
-      const { data } = verifyToken(token);
+      const { data } = verifyAccessToken(token);
       // Check if user is active or not
       const user = await userModel.findOne({
         email: data.email,

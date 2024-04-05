@@ -1,7 +1,10 @@
 const userModel = require("./user.model");
 const { hashPassword, comparePassword } = require("../../utils/bcrypt");
 const { mail } = require("../../services/mailer");
-const { generateToken, generateRandomToken } = require("../../utils/token");
+const {
+  generateAccessToken,
+  generateRandomToken,
+} = require("../../utils/token");
 // create
 const create = (payload) => {
   return userModel.create(payload);
