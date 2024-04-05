@@ -31,9 +31,10 @@ function Home() {
                 {blogs?.data?.data &&
                     blogs.data.data.map((blog, i) => {
                         return (
-                            <TiltCard key={i}>
+                            <TiltCard key={i} className="w-full md:w-[30%]">
                                 <BlogCard
-                                    className="w-ful h-full shadow-lg transition-all duration-300 ease-linear hover:-translate-y-4 hover:shadow-2xl"
+                                    key={i}
+                                    className="w-ful h-full shadow-lg transition-all duration-300 ease-linear md:hover:-translate-y-4 md:hover:shadow-2xl"
                                     title={blog.title}
                                     content={blog.content}
                                 />

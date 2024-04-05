@@ -9,7 +9,13 @@ import React, { useRef } from 'react'
 const ROTATION_RANGE = 25
 const HALF_ROTATION_RANGE = 25 / 2
 
-export const TiltCard = ({ children }: { children: React.ReactNode }) => {
+export const TiltCard = ({
+    children,
+    className,
+}: {
+    children: React.ReactNode
+    className: string
+}) => {
     const ref = useRef<HTMLDivElement | null>(null)
 
     const x = useMotionValue(0)
@@ -47,7 +53,7 @@ export const TiltCard = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <motion.div
-            className="w-[30%]"
+            className={className}
             ref={ref}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
