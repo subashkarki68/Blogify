@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { URLS } from '@/constants'
+import { useAuthContext } from '@/context/AuthProvider'
 import { axiosInstance } from '@/utils/api'
 import { CheckCircleIcon, CircleXIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -39,6 +40,7 @@ function Login() {
         status: false,
         message: '',
     })
+    const { user, setUser } = useAuthContext()
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
@@ -56,12 +58,33 @@ function Login() {
             setIsSubmitting(true)
             const res = await axiosInstance.post(LOGIN, { email, password })
             if (res.status === 200) {
-                console.log(res.data.result)
+                const name = res?.data?.result?.name || 'Unknown'
+                const email = res?.data?.result?.email || 'Unknown Email'
+                const roles = res?.data?.result?.roles || []
+                let fName = ''
+                let lName = ''
+                if (name.length > 0) {
+                    const splitName = name.split(' ')
+                    if (splitName.length > 1) {
+                        fName = splitName[0]
+                        lName = splitName[splitName.length - 1]
+                    }
+                    fName = splitName[0]
+                }
                 if (res.data.result) {
                     setSuccess({
                         status: true,
                         message: 'Logged in Successfully',
                     })
+                    setUser({
+                        name,
+                        email,
+                        roles,
+                        fName,
+                        lName,
+                    })
+                    // console.log(user)
+                    // localStorage.setItem('userDetails', JSON.stringify(user))
                     return setFailure((prev) => ({ ...prev, status: false }))
                 }
                 return setFailure({
@@ -69,7 +92,6 @@ function Login() {
                     message: 'We cannot log you in right now.',
                 })
             }
-            console.log('🚀 ~ handleSubmit ~ res:', res)
         } catch (error: any) {
             console.error('error', error)
             const errorMSG = error?.response?.data.msg || 'Something went wrong'

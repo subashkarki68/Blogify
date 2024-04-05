@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import '../app/globals.css'
+import AuthProvider from './context/AuthProvider.tsx'
 import { BlogContextProvider } from './context/BlogContextProvider.tsx'
 import { ThemeProvider } from './contexts/theme/ThemeProvider.tsx'
 import ErrorPage from './error-page.tsx'
@@ -65,10 +66,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <QueryClientProvider client={queryClient}>
-                <BlogContextProvider>
-                    <RouterProvider router={router} />
-                    <ReactQueryDevtools initialIsOpen={true} />
-                </BlogContextProvider>
+                <AuthProvider>
+                    <BlogContextProvider>
+                        <RouterProvider router={router} />
+                        <ReactQueryDevtools initialIsOpen={true} />
+                    </BlogContextProvider>
+                </AuthProvider>
             </QueryClientProvider>
         </ThemeProvider>
     </React.StrictMode>,

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useAuthContext } from '@/context/AuthProvider'
 import { ModeToggle } from '@/contexts/theme/ModeToggle'
 import {
     ChevronDown,
@@ -20,6 +21,17 @@ import {
 import { Link } from 'react-router-dom'
 
 function AppNavbar() {
+    const { user } = useAuthContext()
+    console.log('user', user)
+
+    const userShortName = user
+        ? user.fName && user.lName
+            ? user.fName[0].toUpperCase() + user.lName[0].toUpperCase()
+            : user.fName
+              ? user.fName[0].toUpperCase()
+              : ''
+        : ''
+
     return (
         <header className="mb-8 flex w-full shrink-0 justify-between border-b-2 p-2 shadow-lg">
             {/* For Small Screens */}
@@ -63,7 +75,7 @@ function AppNavbar() {
                         <DropdownMenuTrigger className="focus-visible:outline-none">
                             <div className="border-1 flex flex-row items-center gap-1 rounded-lg border-gray-200 p-3 text-gray-500 shadow-md hover:border-gray-500 hover:shadow-lg dark:text-gray-400 dark:hover:text-white">
                                 <UserRound className="h-6 w-6" />
-                                <span>UN</span>
+                                <span>{'UN' || ''}</span>
                                 <ChevronDown />
                             </div>
                             {/* <CircleUserIcon className="h-8 w-8" /> */}
@@ -117,7 +129,7 @@ function AppNavbar() {
                         <DropdownMenuTrigger className="focus-visible:outline-none">
                             <div className="border-1 flex flex-row items-center gap-1 rounded-lg border-gray-200 p-3 text-gray-500 shadow-md hover:border-gray-500 hover:shadow-lg dark:text-gray-400 dark:hover:text-white">
                                 <UserRound className="h-6 w-6" />
-                                <span>UN</span>
+                                <span>{userShortName}</span>
                                 <ChevronDown />
                             </div>
                             {/* <CircleUserIcon className="h-8 w-8" /> */}

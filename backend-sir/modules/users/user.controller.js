@@ -119,7 +119,13 @@ const login = async (payload) => {
   const isValidPw = comparePassword(password, user.password);
   if (!isValidPw) throw new Error("Email or password mismatch");
   const tokenData = { name: user.name, email: user.email, roles: user.roles };
-  return { success: true, message: generateAccessToken(tokenData) };
+  return {
+    success: true,
+    message: generateAccessToken(tokenData),
+    name: user.name,
+    email: user.email,
+    roles: user.roles,
+  };
 };
 
 const generateFPToken = async (payload) => {
