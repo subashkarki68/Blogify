@@ -7,11 +7,7 @@ const BlogContext = createContext(null)
 
 function BlogContextProvider({ children }: { children: any }) {
     const { GET_ALL_BLOGS } = URLS.ADMIN
-    const {
-        data: blogs,
-        isPending,
-        error,
-    } = useQuery({
+    const { data: blogs } = useQuery({
         queryKey: ['blogs'],
         queryFn: () => axiosInstance.get(GET_ALL_BLOGS).then((res) => res.data),
     })

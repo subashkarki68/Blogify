@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 export const useBlogs = () => {
-    const [data, setData] = useState()
+    // const [data, setData] = useState()
 }
