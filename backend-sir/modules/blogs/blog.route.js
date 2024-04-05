@@ -9,6 +9,7 @@ router.post(
   validate,
   async (req, res, next) => {
     try {
+      console.log("route", req.body);
       req.body.author = req.body.author || req.currentUser;
       const result = await Controller.create(req.body);
       res.json({ data: result });

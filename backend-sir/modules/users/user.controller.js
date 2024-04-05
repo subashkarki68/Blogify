@@ -115,7 +115,7 @@ const login = async (payload) => {
   if (!user) throw new Error("User doesn't exists");
   const isValidPw = comparePassword(password, user.password);
   if (!isValidPw) throw new Error("Email or password mismatch");
-  const tokenData = { name: user.name, email: user.email };
+  const tokenData = { name: user.name, email: user.email, roles: user.roles };
   return { success: true, message: generateToken(tokenData) };
 };
 

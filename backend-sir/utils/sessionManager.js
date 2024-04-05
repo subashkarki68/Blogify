@@ -4,6 +4,7 @@ const userModel = require("../modules/users/user.model");
 const checkRole = (sysRole) => {
   return async (req, res, next) => {
     try {
+      console.log("checkROle", req.body);
       const token = req.headers.access_token || null;
       if (!token) throw new Error("Token missing");
       const { data } = verifyToken(token);

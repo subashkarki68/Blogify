@@ -3,7 +3,8 @@ const Joi = require("joi");
 const Schema = Joi.object({
   title: Joi.string().min(10).required(),
   slug: Joi.string(),
-  author: Joi.string().required(),
+  // author: Joi.string().required(),
+  author: Joi.object(),
   status: Joi.string().valid("draft", "published").default("draft"),
   content: Joi.string().min(20).required(),
   pictureUrl: Joi.string(),
@@ -11,9 +12,13 @@ const Schema = Joi.object({
 });
 
 const validate = (req, res, next) => {
+  console.log("validate", req.body);
   req.body.author = req.body.author || req.currentUser;
   const { error } = Schema.validate(req.body);
-  if (error) next(e);
+  if (error) {
+    console.log("error", req.body);
+    next(error);
+  }
   next();
 };
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 // import './index.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import '../app/globals.css'
 import { ThemeProvider } from './contexts/theme/ThemeProvider.tsx'
@@ -12,6 +14,7 @@ import About from './pages/About.tsx'
 import Blogs from './pages/admin/Blogs.tsx'
 import Dashboard from './pages/admin/Dashboard.tsx'
 import Users from './pages/admin/Users.tsx'
+import Home from './pages/Home.tsx'
 import User from './pages/User.tsx'
 import ForgotPassword from './pages/userflow/ForgotPassword.tsx'
 import Login from './pages/userflow/Login.tsx'
@@ -35,6 +38,7 @@ const userFlowChildren = [
 ]
 
 const homeChildren = [
+    { index: true, element: <Home /> },
     { path: 'about', element: <About /> },
     { path: 'user', element: <UserFlowLayout />, children: userFlowChildren },
 ]
@@ -54,10 +58,15 @@ const router = createBrowserRouter([
     },
 ])
 
+const queryClient = new QueryClient()
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <RouterProvider router={router} />
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+                <ReactQueryDevtools initialIsOpen={true} />
+            </QueryClientProvider>
         </ThemeProvider>
     </React.StrictMode>,
 )
