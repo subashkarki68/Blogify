@@ -1,5 +1,6 @@
 import BlogCard from '@/components/BlogCard'
 import { TiltCard } from '@/components/TiltCard'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useBlogContext } from '@/context/BlogContextProvider'
 
 function Home() {
@@ -8,15 +9,31 @@ function Home() {
     return (
         <div>
             {blogs.error && <p>Error Fetching blogs...</p>}
-            {blogs.isPending && <p>Loading...</p>}
             <div className="flex w-full flex-wrap justify-center gap-10">
+                {blogs.isPending &&
+                    [...Array(3)].map((_, i) => {
+                        return (
+                            <div
+                                className="h-[350px] w-[30%] animate-pulse rounded-xl border-2"
+                                key={i}
+                            >
+                                <Skeleton className="ml-5 mt-7 h-8 w-[80%] rounded-3xl" />
+                                {[...Array(5)].map((_, i) => (
+                                    <Skeleton
+                                        key={i}
+                                        className="ml-5 mt-7 h-2 w-[80%] rounded-3xl"
+                                    />
+                                ))}
+                                <Skeleton className="ml-5 mt-7 h-2 w-[10%] rounded-3xl" />
+                            </div>
+                        )
+                    })}
                 {blogs?.data?.data &&
                     blogs.data.data.map((blog, i) => {
                         return (
-                            <TiltCard>
+                            <TiltCard key={i}>
                                 <BlogCard
                                     className="w-ful h-full shadow-lg transition-all duration-300 ease-linear hover:-translate-y-4 hover:shadow-2xl"
-                                    key={i}
                                     title={blog.title}
                                     content={blog.content}
                                 />
