@@ -1,24 +1,34 @@
-import { URLS } from '@/constants'
-import { axiosInstance } from '@/utils/api'
-import { useQuery } from '@tanstack/react-query'
+import BlogCard from '@/components/BlogCard'
+import { TiltCard } from '@/components/TiltCard'
+import { useBlogContext } from '@/context/BlogContextProvider'
 
 function Home() {
-    const { GET_ALL_BLOGS } = URLS.ADMIN
-    const {
-        data: blogs,
-        isPending,
-        error,
-    } = useQuery({
-        queryKey: ['blogs'],
-        queryFn: () =>
-            axiosInstance
-                .get(GET_ALL_BLOGS + '?page=2&limit=10')
-                .then((res) => res.data),
-    })
-    console.log('🚀 ~ Home ~ error:', error)
-    console.log('🚀 ~ Home ~ isPending:', isPending)
+    const blogs = useBlogContext()
     console.log('🚀 ~ Home ~ blogs:', blogs)
-    return <div>Home</div>
+    return (
+        <div>
+            {blogs.error && <p>Error Fetching blogs...</p>}
+            {blogs.isPending && <p>Loading...</p>}
+            <div className="flex w-full flex-wrap justify-center gap-10">
+                {blogs?.data?.data &&
+                    blogs.data.data.map((blog, i) => {
+                        return (
+                            <TiltCard>
+                                <BlogCard
+                                    className="w-ful h-full shadow-lg transition-all duration-300 ease-linear hover:-translate-y-4 hover:shadow-2xl"
+                                    key={i}
+                                    title={blog.title}
+                                    content={blog.content}
+                                />
+                            </TiltCard>
+                        )
+                    })}
+            </div>
+            {!blogs.error && !blogs.isPending && !blogs.data.data && (
+                <p>Something went wrong...</p>
+            )}
+        </div>
+    )
 }
 
 export default Home
