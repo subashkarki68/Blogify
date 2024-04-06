@@ -12,7 +12,7 @@ const CookieSecret = process.env.COOKIE_SECRET;
 
 const app = express();
 const corsOptions = {
-  origin: ["https://blogify.ruchirajkarki.com.np/", "http://localhost:5173"], // Allow requests from this origin
+  origin: ["https://blogify.ruchirajkarki.com.np", "http://localhost:5173"], // Allow requests from this origin
   credentials: true, // Allow sending cookies with the request
 };
 
