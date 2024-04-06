@@ -55,7 +55,6 @@ function VerifyPasswordToken() {
                 email: success.email,
                 token: token,
             })
-            console.log(res.data)
             if (res.status === 200) {
                 setTokenVerified(true)
             }

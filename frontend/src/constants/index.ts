@@ -7,6 +7,7 @@ const BLOGS_URL = API_URL + '/blogs'
 export const URLS = {
     LOGIN: USERS_URL + '/login',
     REGISTER: USERS_URL + '/register',
+    LOGOUT: USERS_URL + '/logout',
     GENERATE_FP: USERS_URL + '/generate-fp-token',
     Verify_FP: USERS_URL + '/verify-fp-token',
     Verify_Email: USERS_URL + '/verify-email',

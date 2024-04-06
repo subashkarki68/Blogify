@@ -14,7 +14,7 @@ import { useAuthContext } from '@/context/AuthProvider'
 import { axiosInstance } from '@/utils/api'
 import { CheckCircleIcon, CircleXIcon } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 interface SuccessFailureStatus {
     status: boolean
@@ -23,6 +23,7 @@ interface SuccessFailureStatus {
 
 function Login() {
     const location = useLocation()
+    const navigate = useNavigate()
     const registrationPayload = location?.state || ''
     const { passwordReset } = location.state || ''
 
@@ -40,7 +41,7 @@ function Login() {
         status: false,
         message: '',
     })
-    const { user, setUser } = useAuthContext()
+    const { setUser } = useAuthContext()
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
@@ -61,6 +62,7 @@ function Login() {
                 const name = res?.data?.result?.name || 'Unknown'
                 const email = res?.data?.result?.email || 'Unknown Email'
                 const roles = res?.data?.result?.roles || []
+                const userId = res?.data?.result?.user?._id || ''
                 let fName = ''
                 let lName = ''
                 if (name.length > 0) {
@@ -77,14 +79,14 @@ function Login() {
                         message: 'Logged in Successfully',
                     })
                     setUser({
+                        userId,
                         name,
                         email,
                         roles,
                         fName,
                         lName,
                     })
-                    // console.log(user)
-                    // localStorage.setItem('userDetails', JSON.stringify(user))
+                    navigate('/')
                     return setFailure((prev) => ({ ...prev, status: false }))
                 }
                 return setFailure({

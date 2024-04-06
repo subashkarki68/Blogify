@@ -52,7 +52,6 @@ function VerifyEmail() {
                 setSuccessMessage(res?.data?.result?.message || 'Success')
                 navigate('/user/login', { state: { email, password } })
             }
-            console.log(res)
         } catch (error: any) {
             setIsWrongToken(true)
             // Handle errors appropriately

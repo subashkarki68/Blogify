@@ -21,8 +21,7 @@ import {
 import { Link } from 'react-router-dom'
 
 function AppNavbar() {
-    const { user } = useAuthContext()
-    console.log('user', user)
+    const { user, logout } = useAuthContext()
 
     const userShortName = user
         ? user.fName && user.lName
@@ -142,7 +141,11 @@ function AppNavbar() {
                             </DropdownMenuItem>
                             <DropdownMenuItem>Profile</DropdownMenuItem>
                             <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
+                            {user.userId && (
+                                <DropdownMenuItem onClick={logout}>
+                                    Logout
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

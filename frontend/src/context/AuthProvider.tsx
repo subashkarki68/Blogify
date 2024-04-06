@@ -1,3 +1,5 @@
+import { URLS } from '@/constants'
+import { axiosInstance } from '@/utils/api'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 interface AuthProviderProps {
@@ -5,6 +7,7 @@ interface AuthProviderProps {
 }
 
 export interface User {
+    userId: string
     name: string
     email: string
     roles: string[]
@@ -15,15 +18,18 @@ export interface User {
 interface AuthContextType {
     user: User
     setUser: (user: User) => void
+    logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const userLS = localStorage.getItem('userDetails')
+
     const initialUser = () => {
         if (userLS !== null) return JSON.parse(userLS)
         return {
+            userId: '',
             name: '',
             email: '',
             roles: [''],
@@ -32,12 +38,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }
     const [user, setUser] = useState(initialUser())
+
+    const logout = async () => {
+        const { LOGOUT } = URLS
+        setUser(initialUser)
+        localStorage.removeItem('userDetails')
+        try {
+            await axiosInstance.post(LOGOUT)
+        } catch (error) {
+            console.error('Error during logout:', error)
+        }
+    }
     useEffect(() => {
         localStorage.setItem('userDetails', JSON.stringify(user))
     }, [user])
 
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
+        <AuthContext.Provider value={{ user, setUser, logout }}>
             {children}
         </AuthContext.Provider>
     )

@@ -5,7 +5,6 @@ import { useBlogContext } from '@/context/BlogContextProvider'
 
 function Home() {
     const blogs = useBlogContext()
-    console.log('🚀 ~ Home ~ blogs:', blogs)
     return (
         <div>
             {blogs.error && <p>Error Fetching blogs...</p>}

@@ -46,9 +46,7 @@ function Register() {
     })
 
     const navigate = useNavigate()
-    console.log(prepayload)
     const handlePayloadChange = (e: ChangeEvent<HTMLInputElement>) => {
-        // console.log(e.target.value)
         setPayload((prev) => ({ ...prev, [e.target.id]: e.target?.value }))
         setSuccess((prev) => ({ ...prev, status: false }))
         setFailure((prev) => ({ ...prev, status: false }))
@@ -72,11 +70,9 @@ function Register() {
                     message: 'We cannot Register you in right now.',
                 })
             }
-            console.log('🚀 ~ handleRegister ~ res:', res)
         } catch (error: any) {
             console.error('error', error)
             const errorMSG = error?.response?.data.msg || 'Something went wrong'
-            console.log(errorMSG)
             setFailure({ status: true, message: errorMSG })
         } finally {
             setIsSubmitting(false)
