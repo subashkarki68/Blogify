@@ -44,6 +44,7 @@ function Register() {
     const [prepayload, setPrepayload] = useState({
         confirmpassword: '',
     })
+    console.log(prepayload)
 
     const navigate = useNavigate()
     const handlePayloadChange = (e: ChangeEvent<HTMLInputElement>) => {
