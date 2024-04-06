@@ -79,6 +79,7 @@ router.post("/login", login, async (req, res, next) => {
       sameSite: "none",
       secure: true,
       expires: expiryTime,
+      partitioned: true,
     });
     res.json({ result });
   } catch (e) {
