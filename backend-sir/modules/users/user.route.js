@@ -189,7 +189,7 @@ router.get(
 router.post("/logout", checkRole(["admin", "user"]), (req, res) => {
   // remove token from cookies
   res.clearCookie("access_token");
-  res.send({ success: true, msg: "Logged out" });
+  res.json({ success: true, msg: "Logged out" });
 });
 
 // GET ONE USER
