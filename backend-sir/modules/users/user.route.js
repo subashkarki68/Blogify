@@ -76,10 +76,9 @@ router.post("/login", login, async (req, res, next) => {
     res.cookie("access_token", generateAccessToken(result.user), {
       signed: true,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "strict",
       secure: true,
       expires: expiryTime,
-      partitioned: true,
     });
     res.json({ result });
   } catch (e) {
