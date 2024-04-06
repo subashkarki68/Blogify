@@ -226,10 +226,6 @@ const updateProfile = (_id, payload) => {
   return userModel.updateOne({ _id }, rest);
 };
 
-const logout = () => {
-  //Finish this code logout
-};
-
 module.exports = {
   create,
   list,
@@ -247,5 +243,4 @@ module.exports = {
   updateProfile,
   verifyEmailToken,
   changeForgottenPassword,
-  logout,
 };
