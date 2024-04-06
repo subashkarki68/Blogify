@@ -4,6 +4,7 @@ const { login, validate } = require("./user.validate");
 const { checkRole } = require("../../utils/sessionManager");
 const userController = require("./user.controller");
 const { date } = require("joi");
+const { generateAccessToken } = require("../../utils/token");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -67,8 +68,18 @@ router.post(
 
 // LOGIN USER
 router.post("/login", login, async (req, res, next) => {
+  const expiryTime = new Date(
+    Date.now() + parseInt(process.env.JWT_DURATION) * 60 * 60 * 24 * 1000
+  );
   try {
     const result = await userController.login(req.body);
+    res.cookie("access_token", generateAccessToken(result.user), {
+      signed: true,
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      expires: expiryTime,
+    });
     res.json({ result });
   } catch (e) {
     next(e);

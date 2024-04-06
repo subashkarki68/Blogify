@@ -4,7 +4,8 @@ const userModel = require("../modules/users/user.model");
 const checkRole = (sysRole) => {
   return async (req, res, next) => {
     try {
-      const token = req.headers.authorization?.split(" ")[1] || null;
+      // const token = req.headers.authorization?.split(" ")[1] || null;
+      const token = req.signedCookies["access_token"];
       if (!token) throw new Error("Token missing");
       const { data } = verifyAccessToken(token);
       // Check if user is active or not

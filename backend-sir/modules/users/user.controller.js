@@ -56,20 +56,13 @@ const list = async (search, page = 1, limit = 1) => {
   };
 };
 
-// Read Part 2
-const getById = (_id) => {
-  return userModel.findOne({ _id });
-};
+const getById = (_id) => userModel.findOne({ _id });
 
 // Update
-const updateById = (_id, payload) => {
-  return userModel.updateOne({ _id }, payload);
-};
+const updateById = (_id, payload) => userModel.updateOne({ _id }, payload);
 
 // Delete
-const removeById = (_id) => {
-  return userModel.deleteOne({ _id });
-};
+const removeById = (_id) => userModel.deleteOne({ _id });
 
 const generateEmailToken = async (email, emailVerifyToken) => {
   // email send with token
@@ -125,6 +118,15 @@ const login = async (payload) => {
     name: user.name,
     email: user.email,
     roles: user.roles,
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      roles: user.roles,
+      isActive: user.isActive,
+      emailVerified: user.emailVerified,
+      createdAt: user.createdAt,
+    },
   };
 };
 
@@ -216,13 +218,16 @@ const blockUser = async (payload) => {
   return `User ${status?.isActive ? "unblocked" : "blocked"} Successfully`;
 };
 
-const getProfile = (_id) => {
-  return userModel.findOne({ _id, isActive: true }).select("-password");
-};
+const getProfile = (_id) =>
+  userModel.findOne({ _id, isActive: true }).select("-password");
 
 const updateProfile = (_id, payload) => {
   const { roles, email, password, isActive, ...rest } = payload;
   return userModel.updateOne({ _id }, rest);
+};
+
+const logout = () => {
+  //Finish this code logout
 };
 
 module.exports = {
@@ -242,4 +247,5 @@ module.exports = {
   updateProfile,
   verifyEmailToken,
   changeForgottenPassword,
+  logout,
 };

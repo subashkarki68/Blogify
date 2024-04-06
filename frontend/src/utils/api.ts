@@ -5,4 +5,5 @@ export const axiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: 10000,
     headers: { Authorization: 'Bearer foobar' },
+    withCredentials: true,
 })

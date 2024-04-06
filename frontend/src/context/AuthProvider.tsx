@@ -31,7 +31,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
             lName: '',
         }
     }
-    //TODO
     const [user, setUser] = useState(initialUser())
     useEffect(() => {
         localStorage.setItem('userDetails', JSON.stringify(user))
@@ -47,7 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 export function useAuthContext() {
     const context = useContext(AuthContext)
     if (context === undefined)
-        throw new Error('useAuthContext must be used with a AuthContext')
+        throw new Error('useAuthContext must be used within a AuthContext')
     return context
 }
 
