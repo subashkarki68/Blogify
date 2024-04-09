@@ -2,13 +2,28 @@ import BlogCard from '@/components/BlogCard'
 import { TiltCard } from '@/components/TiltCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useBlogContext } from '@/context/BlogContextProvider'
+import Paginate from '../components/Paginate'
 
 function Home() {
-    const blogs = useBlogContext()
+    // const { blogs } = useBlogContext()
+    // console.log(blogs.setQ)
+    // blogs.setQ((prev: Q) => ({ ...prev, page: 2 }))
+    const { blogs } = useBlogContext()
+    // blogs.setPage(2)
+    // blogs.setPage(3)
+
+    // const { data: blogs } = useBlogs(2, 5)
     return (
         <div>
             {blogs.error && <p>Error Fetching blogs...</p>}
             <div className="flex w-full flex-wrap justify-center gap-10">
+                <Paginate
+                    page={blogs.page}
+                    limit={blogs.limit}
+                    setLimit={blogs.setLimit}
+                    total={blogs.total}
+                    setPage={blogs.setPage}
+                />
                 {blogs.isPending &&
                     [...Array(3)].map((_, i) => {
                         return (
@@ -41,8 +56,8 @@ function Home() {
                         )
                     })}
             </div>
-            {!blogs.error && !blogs.isPending && !blogs.data.data && (
-                <p>Something went wrong...</p>
+            {!blogs?.data?.data && blogs.isFetched && (
+                <p className="text-destructive">No blogs found</p>
             )}
         </div>
     )

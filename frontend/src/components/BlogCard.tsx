@@ -19,7 +19,7 @@ function BlogCard({ title, content, className = '' }: BlogCardProps) {
                 <CardTitle>{title}</CardTitle>
             </CardHeader>
 
-            <CardContent>{content}</CardContent>
+            <CardContent>{content.slice(0, 400)}...</CardContent>
             <CardFooter className="flex flex-row items-baseline">
                 <span className="w-full">
                     Read More

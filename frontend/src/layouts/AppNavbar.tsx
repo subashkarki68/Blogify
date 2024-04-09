@@ -1,3 +1,4 @@
+import Search from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
@@ -18,10 +19,11 @@ import {
     SearchIcon,
     UserRound,
 } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function AppNavbar() {
     const { user, logout } = useAuthContext()
+    const navigate = useNavigate()
 
     const userShortName = user
         ? user.fName && user.lName
@@ -30,6 +32,10 @@ function AppNavbar() {
               ? user.fName[0].toUpperCase()
               : ''
         : ''
+
+    const handleLinks = {
+        login: () => navigate('/user/login'),
+    }
 
     return (
         <header className="mb-8 flex w-full shrink-0 justify-between border-b-2 p-2 shadow-lg">
@@ -106,15 +112,7 @@ function AppNavbar() {
                     </div>
                 </Link>
                 <div className="flex w-full items-center space-x-2 rounded-lg py-4 md:max-w-sm">
-                    <Input
-                        className="flex-1"
-                        placeholder="Search..."
-                        type="search"
-                    />
-                    <Button size="sm" type="submit" variant="outline">
-                        <SearchIcon className="h-4 w-4" />
-                        <span className="sr-only">Search</span>
-                    </Button>
+                    <Search />
                 </div>
                 <div className="flex items-center gap-4">
                     <ul className="mr-5 flex gap-4">
@@ -142,8 +140,19 @@ function AppNavbar() {
                             <DropdownMenuItem>Profile</DropdownMenuItem>
                             <DropdownMenuItem>Profile</DropdownMenuItem>
                             {user.userId && (
-                                <DropdownMenuItem onClick={logout}>
+                                <DropdownMenuItem
+                                    onClick={logout}
+                                    className="cursor-pointer"
+                                >
                                     Logout
+                                </DropdownMenuItem>
+                            )}
+                            {!user.userId && (
+                                <DropdownMenuItem
+                                    onClick={handleLinks.login}
+                                    className="cursor-pointer"
+                                >
+                                    Login
                                 </DropdownMenuItem>
                             )}
                         </DropdownMenuContent>

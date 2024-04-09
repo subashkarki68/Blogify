@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Starting mongod"
-systemctl start mongod.service &
+#echo "Starting mongod"
+#systemctl start mongod.service &
 # Start a new tmux session
 tmux kill-server &
 tmux new-session -d -s my_session
