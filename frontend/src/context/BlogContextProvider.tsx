@@ -41,11 +41,6 @@ export function BlogContextProvider({ children }: { children: ReactNode }) {
     const [limit, setLimit] = useState(20)
     const [total, setTotal] = useState(0)
 
-    const [q, setQ] = useState<Q>({
-        total: 0,
-        page: 1,
-        limit: 5,
-    })
     const { data, isPending, error, isFetched } = useQuery({
         queryKey: ['blogs', page, limit],
         queryFn: () =>
@@ -53,11 +48,9 @@ export function BlogContextProvider({ children }: { children: ReactNode }) {
                 .get(GET_PUBLISHED_BLOGS + `?page=${page}&limit=${limit}`)
                 .then((res) => res.data.data),
     })
-    console.log('blog context', data)
     useEffect(() => {
         if (isFetched) setTotal(data?.total)
     }, [data])
-    console.log('blogcobtext total', data?.total)
     return (
         <BlogContext.Provider
             value={
@@ -66,7 +59,6 @@ export function BlogContextProvider({ children }: { children: ReactNode }) {
                     isPending,
                     error,
                     isFetched,
-                    setQ,
                     setPage,
                     setLimit,
                     page,

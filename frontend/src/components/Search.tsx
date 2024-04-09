@@ -25,7 +25,6 @@ function Search() {
                 .get(GET_PUBLISHED_BLOGS + `?title=${term}`)
                 .then((res) => res.data.data),
     })
-    console.log(data)
     return (
         <>
             <div className="relative">
