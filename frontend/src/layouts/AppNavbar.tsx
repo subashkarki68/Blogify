@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useAuthContext } from '@/context/AuthProvider'
 import { ModeToggle } from '@/contexts/theme/ModeToggle'
+import { findUserShortName } from '@/utils/users'
 import {
     ChevronDown,
     LucideBook,
@@ -25,13 +26,10 @@ function AppNavbar() {
     const { user, logout } = useAuthContext()
     const navigate = useNavigate()
 
-    const userShortName = user
-        ? user.fName && user.lName
-            ? user.fName[0].toUpperCase() + user.lName[0].toUpperCase()
-            : user.fName
-              ? user.fName[0].toUpperCase()
-              : ''
-        : ''
+    const userShortName = findUserShortName(
+        user?.fName || 'UN',
+        user?.lName || 'NO',
+    )
 
     const handleLinks = {
         login: () => navigate('/user/login'),
@@ -118,8 +116,10 @@ function AppNavbar() {
                     <ul className="mr-5 flex gap-4">
                         <Link to={'/'}>Home</Link>
                         <Link to={'/about'}>About</Link>
-                        <Link to={'/user/login'}>Login</Link>
-                        <Link to={'/user/register'}>Register</Link>
+                        {!user.userId && <Link to={'/user/login'}>Login</Link>}
+                        {!user.userId && (
+                            <Link to={'/user/register'}>Register</Link>
+                        )}
                     </ul>
                     <ModeToggle />
                     <DropdownMenu>

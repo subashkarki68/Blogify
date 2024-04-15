@@ -39,6 +39,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
     const [user, setUser] = useState(initialUser())
 
+    //TODO: add login system here
+
     const logout = async () => {
         const { LOGOUT } = URLS
         setUser(initialUser)

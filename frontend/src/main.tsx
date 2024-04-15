@@ -1,8 +1,9 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 // import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import React from 'react'
+import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import '../app/globals.css'
 import AuthProvider from './context/AuthProvider.tsx'
@@ -23,6 +24,7 @@ import Login from './pages/userflow/Login.tsx'
 import Register from './pages/userflow/Register.tsx'
 import VerifyEmail from './pages/userflow/VerifyEmail.tsx'
 import VerifyPasswordToken from './pages/userflow/VerifyPasswordToken.tsx'
+import { store } from './redux/store.ts'
 
 const adminChildren = [
     { index: true, element: <Dashboard /> },
@@ -63,16 +65,19 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
+    //Warning: getting double data due to strictmode in redux store thunk
     <React.StrictMode>
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <BlogContextProvider>
-                        <RouterProvider router={router} />
-                        <ReactQueryDevtools initialIsOpen={true} />
-                    </BlogContextProvider>
-                </AuthProvider>
-            </QueryClientProvider>
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+                <QueryClientProvider client={queryClient}>
+                    <AuthProvider>
+                        <BlogContextProvider>
+                            <RouterProvider router={router} />
+                            <ReactQueryDevtools initialIsOpen={true} />
+                        </BlogContextProvider>
+                    </AuthProvider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        </Provider>
     </React.StrictMode>,
 )

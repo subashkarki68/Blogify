@@ -86,7 +86,7 @@ function Login() {
                         fName,
                         lName,
                     })
-                    navigate('/')
+                    navigate('/admin')
                     return setFailure((prev) => ({ ...prev, status: false }))
                 }
                 return setFailure({

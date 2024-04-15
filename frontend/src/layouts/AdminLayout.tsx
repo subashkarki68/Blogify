@@ -13,11 +13,12 @@ function AdminLayout() {
     }
 
     return (
-        <div className="flex h-[100vh] w-[100vw] bg-gradient-to-r from-indigo-800 to-indigo-500 text-amber-400">
+        //TODO: when there is no border there is small whitespace in bottom
+        <div className="min-h-[100vh] w-[100vw] bg-gradient-to-r from-indigo-800 to-indigo-500 text-amber-400">
             <AdminSidebar className={`${backBlur ? blurClasses : ''}`} />
             <div>
-                <AdminNavbar blurToggle={blurToggle} />
-                <div className={backBlur ? blurClasses : ''}>
+                <AdminNavbar blurToggle={blurToggle} className="ml-[250]" />
+                <div className={`ml-[250px] ${backBlur ? blurClasses : ''}`}>
                     <Outlet />
                 </div>
             </div>
