@@ -28,7 +28,7 @@ app.use("/assets", express.static("public"));
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://blogify.ruchirajkarki.com.np/"
+    "https://blogify.ruchirajkarki.com.np"
   );
   next();
 });
