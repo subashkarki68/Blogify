@@ -26,9 +26,13 @@ app.use(morgan("dev"));
 app.use(express.json()); // to allow json as request body
 app.use("/assets", express.static("public"));
 app.use((req, res, next) => {
+  console.log(process.env.NODE_ENV);
+
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://blogify.ruchirajkarki.com.np"
+    process.env.NODE_ENV === "production"
+      ? "https://blogify.ruchirajkarki.com.np"
+      : "http://localhost:5173"
   );
   next();
 });
