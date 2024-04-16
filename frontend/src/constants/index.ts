@@ -15,5 +15,6 @@ export const URLS = {
     GET_PUBLISHED_BLOGS: BLOGS_URL + '/published-only',
     ADMIN: {
         GET_ALL_BLOGS: BLOGS_URL,
+        UPDATE_BLOG_STATUS: BLOGS_URL,
     },
 }

@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom/client'
 // import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import React from 'react'
 import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import '../app/globals.css'
@@ -65,19 +64,19 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    //Warning: getting double data due to strictmode in redux store thunk
-    <React.StrictMode>
-        <Provider store={store}>
-            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                <QueryClientProvider client={queryClient}>
-                    <AuthProvider>
-                        <BlogContextProvider>
-                            <RouterProvider router={router} />
-                            <ReactQueryDevtools initialIsOpen={true} />
-                        </BlogContextProvider>
-                    </AuthProvider>
-                </QueryClientProvider>
-            </ThemeProvider>
-        </Provider>
-    </React.StrictMode>,
+    //Warning: getting double data in redux store thunk due to strictmode
+    // <React.StrictMode>
+    <Provider store={store}>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <BlogContextProvider>
+                        <RouterProvider router={router} />
+                        <ReactQueryDevtools initialIsOpen={true} />
+                    </BlogContextProvider>
+                </AuthProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
+    </Provider>,
+    // </React.StrictMode>,
 )

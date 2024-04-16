@@ -43,7 +43,8 @@ const list = async (search, page = 1, limit = 5) => {
         duration: 1,
         createdAt: 1,
         updatedAt: 1,
-        _id: 0,
+        _id: 1,
+        pictureUrl: 1,
       },
     }
   );
@@ -192,7 +193,8 @@ const getPublishedBlogs = async (search, page = 1, limit = 5) => {
         duration: 1,
         createdAt: 1,
         updatedAt: 1,
-        _id: 0,
+        _id: 1,
+        pictureUrl: 1,
       },
     },
     {
@@ -286,9 +288,10 @@ const updateBySlug = async (payload) => {
 const changeStatus = async (slug) => {
   const blog = await blogModel.findOne({ slug });
   if (!blog) throw new Error("Blog not found");
-  return blogModel.updateOne(
+  return await blogModel.findOneAndUpdate(
     { slug },
-    { status: blog.status === "draft" ? "published" : "draft" }
+    { status: blog.status === "draft" ? "published" : "draft" },
+    { new: true, upsert: true }
   );
 };
 

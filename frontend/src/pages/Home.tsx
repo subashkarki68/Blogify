@@ -5,14 +5,7 @@ import { useBlogContext } from '@/context/BlogContextProvider'
 import Paginate from '../components/Paginate'
 
 function Home() {
-    // const { blogs } = useBlogContext()
-    // console.log(blogs.setQ)
-    // blogs.setQ((prev: Q) => ({ ...prev, page: 2 }))
     const { blogs } = useBlogContext()
-    // blogs.setPage(2)
-    // blogs.setPage(3)
-
-    // const { data: blogs } = useBlogs(2, 5)
     return (
         <div>
             {blogs.error && <p>Error Fetching blogs...</p>}

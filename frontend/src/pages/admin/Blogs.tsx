@@ -3,10 +3,12 @@ import {
     blogsStatus,
     fetchBlogs,
     selectAllBlogs,
+    updateBlogStatus,
 } from '@/redux/slices/admin/blogSlice'
 import { AppDispatch } from '@/redux/store'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import BlogStatus from './components/BlogStatus'
 
 function Blogs() {
     const blogs = useSelector(selectAllBlogs)
@@ -19,6 +21,12 @@ function Blogs() {
         }
     }, [blogs, dispatch])
 
+    const handleStatusChange = (
+        slug: string,
+        blogStatus: 'published' | 'draft',
+    ) => {
+        dispatch(updateBlogStatus({ slug, blogStatus }))
+    }
     //Warning: Getting double data due to react strict mode
     console.log('blogs: I am getting double data', blogs)
 
@@ -27,12 +35,17 @@ function Blogs() {
     else if (status === 'failed') content = <p>Fetching blogs failed</p>
     else if (status === 'succeeded')
         content = blogs.map((blog, i) => (
-            <BlogCard
+            <div
                 key={i}
-                title={blog.title}
-                content={blog.content}
-                className="mb-5 w-full"
-            />
+                className="mb-5 flex w-full flex-col gap-5 border-b-2 p-5"
+            >
+                <BlogStatus
+                    slug={blog.slug}
+                    status={blog.status}
+                    onStatusChange={handleStatusChange}
+                />
+                <BlogCard title={blog.title} content={blog.content} />
+            </div>
         ))
 
     return <div className="w-[80%] pl-5">{content}</div>
