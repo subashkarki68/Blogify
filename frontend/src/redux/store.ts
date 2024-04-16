@@ -5,7 +5,7 @@ export const store = configureStore({
     reducer: {
         blogs: blogReducer,
     },
-    devTools: false,
+    devTools: !import.meta.env.PROD,
 })
 
 export type RootState = ReturnType<typeof store.getState>
