@@ -75,7 +75,7 @@ router.post("/login", login, async (req, res, next) => {
     const result = await userController.login(req.body);
     res.cookie("access_token", generateAccessToken(result.user), {
       signed: true,
-      sameSite: "strict",
+      sameSite: "none",
       secure: true,
       expires: expiryTime,
     });
