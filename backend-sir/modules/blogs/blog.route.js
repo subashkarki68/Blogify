@@ -18,7 +18,7 @@ router.post(
   }
 );
 
-router.get("/", async (req, res, next) => {
+router.get("/", checkRole(["admin"]), async (req, res, next) => {
   try {
     const { title, author, page, limit } = req.query;
     const search = { title, author };
@@ -54,20 +54,16 @@ router.get("/published-only", async (req, res, next) => {
   }
 });
 
-router.get(
-  "/admin/:slug",
-  checkRole(["user", "admin"]),
-  async (req, res, next) => {
-    try {
-      const { slug } = req.params;
-      const payload = { slug, author: req.currentUser, roles: req.roles };
-      const result = await Controller.getById(payload);
-      res.json({ data: result });
-    } catch (e) {
-      next(e);
-    }
+router.get("/admin/:slug", checkRole(["admin"]), async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const payload = { slug, author: req.currentUser, roles: req.roles };
+    const result = await Controller.getById(payload);
+    res.json({ data: result });
+  } catch (e) {
+    next(e);
   }
-);
+});
 
 router.get("/:slug", async (req, res, next) => {
   try {

@@ -25,17 +25,15 @@ app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json()); // to allow json as request body
 app.use("/assets", express.static("public"));
-app.use((req, res, next) => {
-  console.log(process.env.NODE_ENV);
-
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    process.env.NODE_ENV === "production"
-      ? "https://blogify.ruchirajkarki.com.np"
-      : "http://localhost:5173"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     process.env.NODE_ENV === "production"
+//       ? "https://blogify.ruchirajkarki.com.np"
+//       : "http://localhost:5173"
+//   );
+//   next();
+// });
 
 app.use("/", indexRouter);
 

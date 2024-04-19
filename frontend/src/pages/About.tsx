@@ -1,5 +1,4 @@
-function About() {
-    return <div>About</div>
+const About = () => {
+    return <p>About</p>
 }
-
 export default About

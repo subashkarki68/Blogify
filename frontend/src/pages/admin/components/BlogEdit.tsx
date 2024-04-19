@@ -20,6 +20,7 @@ import { updateBlog } from '@/redux/slices/admin/blogSlice'
 import { AppDispatch } from '@/redux/store'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import Diag from './Diag'
 
 interface BlogEditProps {
     slug: string
@@ -46,58 +47,64 @@ const BlogEdit = ({ slug, title, content }: BlogEditProps) => {
         )
     }
     return (
-        <Sheet>
-            <SheetTrigger className={`button ${buttonVariants()}`}>
-                Edit Post
-            </SheetTrigger>
-            <SheetContent side={'bottom'}>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-2/3 space-y-6"
-                        encType="multipart/form-data"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="title"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Title</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder="Blog title goes here"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Blog title
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="content"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Content</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Content goes here"
-                                            {...field}
-                                            className="h-[100px] resize-none"
-                                        />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Blog Content
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {/* <FormField
+        <div className="flex gap-2">
+            <Diag
+                trigger="Delete Blog"
+                title="Are you sure you want to delete the blog post?"
+                desc={`After Deleting the Post you won't be able to recover the blog post.`}
+            />
+            <Sheet>
+                <SheetTrigger className={`button ${buttonVariants()}`}>
+                    Edit Post
+                </SheetTrigger>
+                <SheetContent side={'bottom'}>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-2/3 space-y-6"
+                            encType="multipart/form-data"
+                        >
+                            <FormField
+                                control={form.control}
+                                name="title"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Title</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="Blog title goes here"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Blog title
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="content"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Content</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Content goes here"
+                                                {...field}
+                                                className="h-[100px] resize-none"
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Blog Content
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* <FormField
                             control={form.control}
                             name="sugar"
                             render={({
@@ -113,13 +120,14 @@ const BlogEdit = ({ slug, title, content }: BlogEditProps) => {
                                 </FormItem>
                             )}
                         /> */}
-                        <SheetClose asChild>
-                            <Button type="submit">submit</Button>
-                        </SheetClose>
-                    </form>
-                </Form>
-            </SheetContent>
-        </Sheet>
+                            <SheetClose asChild>
+                                <Button type="submit">submit</Button>
+                            </SheetClose>
+                        </form>
+                    </Form>
+                </SheetContent>
+            </Sheet>
+        </div>
     )
 }
 
