@@ -13,7 +13,7 @@ import { URLS } from '@/constants'
 import { useAuthContext } from '@/context/AuthProvider'
 import { axiosInstance } from '@/utils/api'
 import { CheckCircleIcon, CircleXIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 interface SuccessFailureStatus {
@@ -41,7 +41,11 @@ function Login() {
         status: false,
         message: '',
     })
-    const { setUser } = useAuthContext()
+    const { user, setUser } = useAuthContext()
+
+    useEffect(() => {
+        if (user.userId) navigate('/')
+    }, [])
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
@@ -86,7 +90,19 @@ function Login() {
                         fName,
                         lName,
                     })
-                    navigate('/admin')
+                    localStorage.setItem(
+                        'userDetails',
+                        JSON.stringify({
+                            userId,
+                            name,
+                            email,
+                            roles,
+                            fName,
+                            lName,
+                        }),
+                    )
+                    if (user?.roles?.includes('admin')) navigate('/admin')
+                    navigate('/')
                     return setFailure((prev) => ({ ...prev, status: false }))
                 }
                 return setFailure({

@@ -8,6 +8,8 @@ import {
 import { AppDispatch } from '@/redux/store'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import BlogAuthor from './components/BlogAuthor'
+import BlogEdit from './components/BlogEdit'
 import BlogStatus from './components/BlogStatus'
 
 function Blogs() {
@@ -39,11 +41,21 @@ function Blogs() {
                 key={i}
                 className="mb-5 flex w-full flex-col gap-5 border-b-2 p-5"
             >
-                <BlogStatus
-                    slug={blog.slug}
-                    status={blog.status}
-                    onStatusChange={handleStatusChange}
-                />
+                <div className="flex items-center justify-between">
+                    <BlogAuthor author={blog.author} />
+                    <div className="flex items-center gap-5">
+                        <BlogStatus
+                            slug={blog.slug}
+                            status={blog.status}
+                            onStatusChange={handleStatusChange}
+                        />
+                        <BlogEdit
+                            slug={blog.slug}
+                            title={blog.title}
+                            content={blog.content}
+                        />
+                    </div>
+                </div>
                 <BlogCard title={blog.title} content={blog.content} />
             </div>
         ))

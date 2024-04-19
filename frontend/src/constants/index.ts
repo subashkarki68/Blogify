@@ -16,5 +16,6 @@ export const URLS = {
     ADMIN: {
         GET_ALL_BLOGS: BLOGS_URL,
         UPDATE_BLOG_STATUS: BLOGS_URL,
+        UPDATE_BLOG: BLOGS_URL,
     },
 }

@@ -19,12 +19,16 @@ function AdminSidebar({ className }: { className: string }) {
         'flex h-[100%] items-center gap-2 px-10 py-4 hover:cursor-pointer hover:bg-amber-400 hover:text-indigo-600'
 
     const userShortName = findUserShortName(
-        user?.fName || 'A',
-        user?.lName || 'N',
+        user?.fName || '',
+        user?.lName || '',
     )
 
     const handleLinks = {
         login: () => navigate('/user/login'),
+        logout: () => {
+            logout()
+            navigate('/user/login')
+        },
     }
 
     return (
@@ -94,7 +98,7 @@ function AdminSidebar({ className }: { className: string }) {
                         {user.userId && (
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={logout}
+                                onClick={handleLinks.logout}
                             >
                                 Logout
                             </DropdownMenuItem>

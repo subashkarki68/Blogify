@@ -78,5 +78,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             </QueryClientProvider>
         </ThemeProvider>
     </Provider>,
-    // </React.StrictMode>,
+    // </React.StrictMode>
 )

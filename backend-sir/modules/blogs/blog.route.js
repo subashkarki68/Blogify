@@ -96,7 +96,7 @@ router.put("/:slug", checkRole(["user", "admin"]), async (req, res, next) => {
   }
 });
 
-router.patch("/:slug", checkRole(["user", "admin"]), async (req, res, next) => {
+router.patch("/:slug", checkRole(["admin"]), async (req, res, next) => {
   try {
     const { slug } = req.params;
     const result = await Controller.changeStatus(slug);

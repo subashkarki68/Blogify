@@ -29,6 +29,7 @@ const initialState: BlogsState = {
 const fetchBlogsUrl = URLS.ADMIN.GET_ALL_BLOGS
 const updateBlogStatusUrl = (slug: string) =>
     URLS.ADMIN.UPDATE_BLOG_STATUS + `/${slug}`
+const updateBlogUrl = (slug: string) => URLS.ADMIN.UPDATE_BLOG + `/${slug}`
 
 export const fetchBlogs = createAsyncThunk('adminBlog/fetchBlogs', async () => {
     const response = await axiosInstance.get(fetchBlogsUrl + '?limit=100')
@@ -41,6 +42,21 @@ export const updateBlogStatus = createAsyncThunk(
         const response = await axiosInstance.patch(
             updateBlogStatusUrl(params.slug),
             { status: params.blogStatus },
+            { withCredentials: true },
+        )
+        return response.data.data
+    },
+)
+
+export const updateBlog = createAsyncThunk(
+    'adminBlog/updateBlog',
+    async (params: { slug: string; payload: any }) => {
+        const response = await axiosInstance.put(
+            updateBlogUrl(params.slug),
+            {
+                title: params.payload?.title || '',
+                content: params.payload?.content || '',
+            },
             { withCredentials: true },
         )
         return response.data.data
@@ -75,6 +91,16 @@ const blogSlice = createSlice({
         builder.addCase(updateBlogStatus.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
+        })
+        builder.addCase(updateBlog.fulfilled, (state, action) => {
+            const result = state.blogs.find(
+                (blog) => blog._id === action.payload._id,
+            )
+            if (result) {
+                result.title = action.payload.title
+                result.content = action.payload.content
+                result.slug = action.payload.slug
+            }
         })
     },
 })

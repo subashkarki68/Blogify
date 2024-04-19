@@ -1,6 +1,5 @@
 const blogModel = require("./blog.model");
 const { generateSlug } = require("../../utils/textParser");
-const { default: slugify } = require("slugify");
 
 const create = (payload) => {
   payload.slug = generateSlug(payload.title);
@@ -277,12 +276,21 @@ const updateBySlug = async (payload) => {
   const blog = await blogModel.findOne({ slug });
   if (!blog) throw new Error("Blog not found");
   if (rest.title) {
-    rest.slug = slugify(rest.title);
+    rest.slug = generateSlug(rest.title);
   }
-  if (roles.include("user") && !author === blog.author) {
+  if (roles.includes("user") && !author === blog.author) {
     throw new Error("Invalid Author");
   }
-  return blogModel.updateOne({ _id: blog._id }, rest);
+  console.log(payload);
+  const result = await blogModel.findOneAndUpdate(
+    { _id: blog._id },
+    { ...rest },
+    {
+      new: true,
+      upsert: true,
+    }
+  );
+  return result;
 };
 
 const changeStatus = async (slug) => {

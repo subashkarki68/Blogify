@@ -20,17 +20,19 @@ import {
     SearchIcon,
     UserRound,
 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 function AppNavbar() {
+    const [userShortName, setUserShortName] = useState('')
     const { user, logout } = useAuthContext()
     const navigate = useNavigate()
 
-    const userShortName = findUserShortName(
-        user?.fName || 'UN',
-        user?.lName || 'NO',
-    )
-
+    useEffect(() => {
+        setUserShortName(
+            findUserShortName(user?.fName || '', user?.lName || ''),
+        )
+    }, [user])
     const handleLinks = {
         login: () => navigate('/user/login'),
     }
@@ -78,7 +80,7 @@ function AppNavbar() {
                         <DropdownMenuTrigger className="focus-visible:outline-none">
                             <div className="border-1 flex flex-row items-center gap-1 rounded-lg border-gray-200 p-3 text-gray-500 shadow-md hover:border-gray-500 hover:shadow-lg dark:text-gray-400 dark:hover:text-white">
                                 <UserRound className="h-6 w-6" />
-                                <span>{'UN' || ''}</span>
+                                <span>{''}</span>
                                 <ChevronDown />
                             </div>
                             {/* <CircleUserIcon className="h-8 w-8" /> */}
@@ -116,6 +118,9 @@ function AppNavbar() {
                     <ul className="mr-5 flex gap-4">
                         <Link to={'/'}>Home</Link>
                         <Link to={'/about'}>About</Link>
+                        {user?.roles?.includes('admin') && (
+                            <Link to={'/admin'}>Admin</Link>
+                        )}
                         {!user.userId && <Link to={'/user/login'}>Login</Link>}
                         {!user.userId && (
                             <Link to={'/user/register'}>Register</Link>
