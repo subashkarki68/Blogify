@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 const data = require("./data");
 
 const mongoose = require("mongoose");
@@ -6,11 +6,13 @@ const blogController = require("../modules/blogs/blog.controller");
 
 const user1 = "660d92ea59336b069313f02b";
 const user2 = "660dc638eaaf9ca27382613a";
+console.log("Dotenv loaded:", require("dotenv").config().loaded);
 
 const setup = {
   initialize: async () => {
     try {
       console.log("Starting Blog seeding with data:", data.length);
+      console.log("writing to", process.env.DB_URL);
       await mongoose.connect(process.env.DB_URL);
       let temp = 0;
       for (let i = 0; i < data.length; i++) {

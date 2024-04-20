@@ -19,6 +19,7 @@ const checkRole = (sysRole) => {
       if (!isValidRole) throw new Error("Permission denied");
       req.currentUser = user?._id;
       req.roles = user?.roles;
+      req.isAdmin = user?.roles.includes("admin");
       next();
     } catch (e) {
       next(e);

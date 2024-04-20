@@ -17,5 +17,7 @@ export const URLS = {
         GET_ALL_BLOGS: BLOGS_URL,
         UPDATE_BLOG_STATUS: BLOGS_URL,
         UPDATE_BLOG: BLOGS_URL,
+        DELETE_BLOG: BLOGS_URL,
+        ADD_BLOG: BLOGS_URL,
     },
 }

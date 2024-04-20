@@ -15,9 +15,10 @@ interface DeleteDiagProps {
     trigger: string
     title: string
     desc: string
+    action: () => void
 }
 
-const Diag = ({ trigger, title, desc }: DeleteDiagProps) => {
+const Diag = ({ trigger, title, desc, action }: DeleteDiagProps) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -32,6 +33,7 @@ const Diag = ({ trigger, title, desc }: DeleteDiagProps) => {
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                         className={`button ${buttonVariants({ variant: 'destructive' })}`}
+                        onClick={action}
                     >
                         {trigger}
                     </AlertDialogAction>

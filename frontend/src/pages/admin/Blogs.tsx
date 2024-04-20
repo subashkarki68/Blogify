@@ -1,4 +1,13 @@
 import BlogCard from '@/components/BlogCard'
+import { buttonVariants } from '@/components/ui/button'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 import {
     blogsStatus,
     fetchBlogs,
@@ -6,8 +15,10 @@ import {
     updateBlogStatus,
 } from '@/redux/slices/admin/blogSlice'
 import { AppDispatch } from '@/redux/store'
-import { useEffect } from 'react'
+import { BlogState } from '@/types/blogTypes'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import AddNewBlog from './components/AddNewBlog'
 import BlogAuthor from './components/BlogAuthor'
 import BlogEdit from './components/BlogEdit'
 import BlogStatus from './components/BlogStatus'
@@ -17,11 +28,52 @@ function Blogs() {
     const status = useSelector(blogsStatus)
     const dispatch: AppDispatch = useDispatch()
 
+    const [sortBy, setSortBy] = useState<
+        'newestFirst' | 'oldestFirst' | 'title'
+    >('title')
+
+    const [sortedBlogs, setSortedBlogs] = useState<any>(blogs)
+
     useEffect(() => {
         if (status === 'idle') {
-            dispatch(fetchBlogs())
+            dispatch(fetchBlogs({ limit: 100, page: 1 }))
+        }
+        if (status === 'succeeded') {
+            setSortedBlogs(blogs.map((blog) => blog))
         }
     }, [blogs, dispatch])
+
+    useEffect(() => {
+        switch (sortBy) {
+            case 'newestFirst':
+                setSortedBlogs((prev: any) =>
+                    prev.sort((a: BlogState, b: BlogState) => {
+                        return (
+                            new Date(a.updatedAt).getTime() -
+                            new Date(b.updatedAt).getTime()
+                        )
+                    }),
+                )
+                break
+            case 'oldestFirst':
+                setSortedBlogs((prev: any) =>
+                    prev.sort((a: BlogState, b: BlogState) => {
+                        return (
+                            new Date(b.updatedAt).getTime() -
+                            new Date(a.updatedAt).getTime()
+                        )
+                    }),
+                )
+                break
+            case 'title':
+                setSortedBlogs((prev: any) =>
+                    prev.sort((a: BlogState, b: BlogState) => {
+                        return a.title.localeCompare(b.title)
+                    }),
+                )
+                break
+        }
+    }, [sortBy, blogs])
 
     const handleStatusChange = (
         slug: string,
@@ -29,20 +81,26 @@ function Blogs() {
     ) => {
         dispatch(updateBlogStatus({ slug, blogStatus }))
     }
+
+    const handleSortChange = (value: any) => {
+        setSortBy(value)
+    }
     //Warning: Getting double data due to react strict mode
-    console.log('blogs: I am getting double data', blogs)
 
     let content
     if (status === 'loading') content = <p>Loading...</p>
     else if (status === 'failed') content = <p>Fetching blogs failed</p>
     else if (status === 'succeeded')
-        content = blogs.map((blog, i) => (
+        content = sortedBlogs.map((blog: any, i: number) => (
             <div
                 key={i}
                 className="mb-5 flex w-full flex-col gap-5 border-b-2 p-5"
             >
                 <div className="flex items-center justify-between">
-                    <BlogAuthor author={blog.author} />
+                    <div className="flex flex-col">
+                        <BlogAuthor author={blog.author} />
+                        <span>Modified: {blog.timeAgo}</span>
+                    </div>
                     <div className="flex items-center gap-5">
                         <BlogStatus
                             slug={blog.slug}
@@ -60,7 +118,38 @@ function Blogs() {
             </div>
         ))
 
-    return <div className="w-[80%] pl-5">{content}</div>
+    return (
+        <div className="w-[80%] pl-5">
+            <AddNewBlog />
+            <Select onValueChange={handleSortChange}>
+                <SelectTrigger
+                    className={`button w-[100px] ${buttonVariants({ variant: 'secondary' })}`}
+                >
+                    <SelectValue placeholder="Sort By" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup className="cursor-pointer">
+                        <SelectItem
+                            className="cursor-pointer"
+                            value="newestFirst"
+                        >
+                            Newest First
+                        </SelectItem>
+                        <SelectItem
+                            className="cursor-pointer"
+                            value="oldestFirst"
+                        >
+                            Oldest First
+                        </SelectItem>
+                        <SelectItem className="cursor-pointer" value="title">
+                            Title
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+            {content}
+        </div>
+    )
 }
 
 export default Blogs

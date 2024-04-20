@@ -303,6 +303,10 @@ const changeStatus = async (slug) => {
   );
 };
 
+const deleteBlog = async (slug) => {
+  return await blogModel.deleteOne({ slug });
+};
+
 module.exports = {
   changeStatus,
   create,
@@ -312,4 +316,5 @@ module.exports = {
   getBySlug,
   getById,
   updateBySlug,
+  deleteBlog,
 };

@@ -10,6 +10,9 @@ router.post(
   async (req, res, next) => {
     try {
       req.body.author = req.body.author || req.currentUser;
+      req.body.author = req.isAdmin
+        ? req.body.author || req.currentUser
+        : req.currentUser;
       const result = await Controller.create(req.body);
       res.json({ data: result });
     } catch (e) {
@@ -96,6 +99,16 @@ router.patch("/:slug", checkRole(["admin"]), async (req, res, next) => {
   try {
     const { slug } = req.params;
     const result = await Controller.changeStatus(slug);
+    res.json({ data: result });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.delete("/:slug", checkRole(["admin"]), async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const result = await Controller.deleteBlog(slug);
     res.json({ data: result });
   } catch (e) {
     next(e);

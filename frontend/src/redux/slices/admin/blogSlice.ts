@@ -1,40 +1,34 @@
 import { URLS } from '@/constants'
 import { RootState } from '@/redux/store'
+import { BlogsState, BlogState } from '@/types/blogTypes'
 import { axiosInstance } from '@/utils/api'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
-export interface BlogState {
-    _id: string
-    author: string
-    title: string
-    content: string
-    createdAt: string
-    status: 'published' | 'draft'
-    slug: string
-    pictureUrl?: string
-}
-
-export interface BlogsState {
-    blogs: BlogState[]
-    status: 'idle' | 'loading' | 'succeeded' | 'failed'
-    error: string | undefined
-}
+import { formatDistanceToNow } from 'date-fns'
 
 const initialState: BlogsState = {
     blogs: [],
     status: 'idle',
     error: undefined,
+    sortBy: 'newestFirst',
 }
 
 const fetchBlogsUrl = URLS.ADMIN.GET_ALL_BLOGS
 const updateBlogStatusUrl = (slug: string) =>
     URLS.ADMIN.UPDATE_BLOG_STATUS + `/${slug}`
 const updateBlogUrl = (slug: string) => URLS.ADMIN.UPDATE_BLOG + `/${slug}`
+const deleteBlogUrl = (slug: string) => URLS.ADMIN.DELETE_BLOG + `/${slug}`
+const addBlogUrl = URLS.ADMIN.ADD_BLOG
 
-export const fetchBlogs = createAsyncThunk('adminBlog/fetchBlogs', async () => {
-    const response = await axiosInstance.get(fetchBlogsUrl + '?limit=100')
-    return response.data.data.data
-})
+export const fetchBlogs = createAsyncThunk(
+    'adminBlog/fetchBlogs',
+    async (payload: { limit: number; page: number }) => {
+        let limit = payload?.limit || 10
+        const response = await axiosInstance.get(
+            `${fetchBlogsUrl}?limit=${limit}`,
+        )
+        return response.data.data.data
+    },
+)
 
 export const updateBlogStatus = createAsyncThunk(
     'adminBlog/updateBlogStatus',
@@ -42,7 +36,6 @@ export const updateBlogStatus = createAsyncThunk(
         const response = await axiosInstance.patch(
             updateBlogStatusUrl(params.slug),
             { status: params.blogStatus },
-            { withCredentials: true },
         )
         return response.data.data
     },
@@ -51,14 +44,29 @@ export const updateBlogStatus = createAsyncThunk(
 export const updateBlog = createAsyncThunk(
     'adminBlog/updateBlog',
     async (params: { slug: string; payload: any }) => {
-        const response = await axiosInstance.put(
-            updateBlogUrl(params.slug),
-            {
-                title: params.payload?.title || '',
-                content: params.payload?.content || '',
-            },
-            { withCredentials: true },
-        )
+        const response = await axiosInstance.put(updateBlogUrl(params.slug), {
+            title: params.payload?.title || '',
+            content: params.payload?.content || '',
+        })
+        return response.data.data
+    },
+)
+
+export const deleteBlog = createAsyncThunk(
+    'adminBlog/deleteBlog',
+    async (slug: string) => {
+        const response = await axiosInstance.delete(deleteBlogUrl(slug))
+        return response.data
+    },
+)
+
+export const addNewBlog = createAsyncThunk(
+    'adminBlog/addBlog',
+    async (payload: BlogState) => {
+        const response = await axiosInstance.post(addBlogUrl, {
+            title: payload.title,
+            content: payload.content,
+        })
         return response.data.data
     },
 )
@@ -73,7 +81,11 @@ const blogSlice = createSlice({
         })
         builder.addCase(fetchBlogs.fulfilled, (state, action) => {
             state.status = 'succeeded'
+            state.blogs = []
             action.payload.map((blog: BlogState) => state.blogs.push(blog))
+            state.blogs.map((blog) => {
+                blog.timeAgo = formatDistanceToNow(blog.updatedAt) + ' ago'
+            })
         })
         builder.addCase(fetchBlogs.rejected, (state, action) => {
             state.status = 'failed'
@@ -85,8 +97,6 @@ const blogSlice = createSlice({
                 (blog) => blog._id === action.payload._id,
             )
             if (result) result.status = action.payload.status
-
-            console.log('🚀 ~ builder.addCase ~ index:', result?.status)
         })
         builder.addCase(updateBlogStatus.rejected, (state, action) => {
             state.status = 'failed'
@@ -101,6 +111,15 @@ const blogSlice = createSlice({
                 result.content = action.payload.content
                 result.slug = action.payload.slug
             }
+        })
+        builder.addCase(deleteBlog.fulfilled, (state, action) => {
+            state.blogs = state.blogs.filter(
+                (blog) => blog.slug !== action.meta.arg,
+            )
+        })
+        builder.addCase(addNewBlog.fulfilled, (state, action) => {
+            state.blogs.unshift(action.payload)
+            console.log(action.payload)
         })
     },
 })
