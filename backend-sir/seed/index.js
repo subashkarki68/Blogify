@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "../.env" });
 const data = require("./data");
+const { sub } = require("date-fns");
 
 const mongoose = require("mongoose");
 const blogController = require("../modules/blogs/blog.controller");
@@ -15,6 +16,7 @@ const setup = {
       console.log("writing to", process.env.DB_URL);
       await mongoose.connect(process.env.DB_URL);
       let temp = 0;
+      let dateManipulate = 1;
       for (let i = 0; i < data.length; i++) {
         if (temp === 100) {
           temp = 0;
@@ -25,6 +27,8 @@ const setup = {
         const payload = data[i];
         payload.status = "published";
         payload.author = i < Math.floor(data.length / 2) ? user1 : user2; // Assign users
+        payload.createdAt = sub(Date.now(), { minutes: dateManipulate++ });
+        payload.updatedAt = sub(Date.now(), { minutes: dateManipulate++ });
         payload.pictureUrl = `https://cdn.dummyjson.com/product-images/${temp}/thumbnail.jpg`;
         await blogController.create(payload);
         console.log("Seeding completed");

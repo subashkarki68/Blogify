@@ -9,7 +9,6 @@ const initialState: BlogsState = {
     blogs: [],
     status: 'idle',
     error: undefined,
-    sortBy: 'newestFirst',
 }
 
 const fetchBlogsUrl = URLS.ADMIN.GET_ALL_BLOGS
@@ -96,7 +95,10 @@ const blogSlice = createSlice({
             const result = state.blogs.find(
                 (blog) => blog._id === action.payload._id,
             )
-            if (result) result.status = action.payload.status
+            if (result) {
+                result.status = action.payload.status
+                result.timeAgo = formatDistanceToNow(new Date()) + ' ago'
+            }
         })
         builder.addCase(updateBlogStatus.rejected, (state, action) => {
             state.status = 'failed'
@@ -110,6 +112,7 @@ const blogSlice = createSlice({
                 result.title = action.payload.title
                 result.content = action.payload.content
                 result.slug = action.payload.slug
+                result.timeAgo = formatDistanceToNow(new Date()) + ' ago'
             }
         })
         builder.addCase(deleteBlog.fulfilled, (state, action) => {
@@ -118,6 +121,8 @@ const blogSlice = createSlice({
             )
         })
         builder.addCase(addNewBlog.fulfilled, (state, action) => {
+            action.payload.timeAgo = formatDistanceToNow(new Date()) + ' ago'
+            action.payload.author = 'You'
             state.blogs.unshift(action.payload)
             console.log(action.payload)
         })

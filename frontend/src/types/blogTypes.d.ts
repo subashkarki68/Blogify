@@ -15,5 +15,6 @@ export interface BlogsState {
     blogs: BlogState[]
     status: 'idle' | 'loading' | 'succeeded' | 'failed'
     error: string | undefined
-    sortBy: 'newestFirst' | 'oldestFirst' | 'title'
+    limit?: number | 10
+    page?: number | 1
 }
