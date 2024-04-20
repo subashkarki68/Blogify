@@ -123,6 +123,7 @@ const blogSlice = createSlice({
         builder.addCase(addNewBlog.fulfilled, (state, action) => {
             action.payload.timeAgo = formatDistanceToNow(new Date()) + ' ago'
             action.payload.author = 'You'
+            action.payload.status = 'draft'
             state.blogs.unshift(action.payload)
             console.log(action.payload)
         })
