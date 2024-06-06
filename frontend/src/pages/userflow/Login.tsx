@@ -34,9 +34,6 @@ function Login() {
     const registrationPayload = location?.state || ''
     const { passwordReset } = location.state || ''
 
-    const initialEmail =
-        registrationPayload?.email || passwordReset?.email || ''
-
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [success, setSuccess] = useState<SuccessFailureStatus>({
         status: false,

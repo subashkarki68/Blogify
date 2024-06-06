@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input'
 import { URLS } from '@/constants'
 import { axiosInstance } from '@/utils/api'
 import { CheckCircleIcon, CircleXIcon } from 'lucide-react'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -48,19 +48,12 @@ function Register() {
         password: '',
         name: '',
     })
-    const [prepayload, setPrepayload] = useState({
-        confirmpassword: '',
-    })
 
     const navigate = useNavigate()
-    const handlePayloadChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPayload((prev) => ({ ...prev, [e.target.id]: e.target?.value }))
-        setSuccess((prev) => ({ ...prev, status: false }))
-        setFailure((prev) => ({ ...prev, status: false }))
-    }
+
     const handleRegister = async (data: any) => {
         const { REGISTER } = URLS
-        const { email, name, password, confirmpassword } = data
+        const { email, name, password } = data
         try {
             setIsSubmitting(true)
             const res = await axiosInstance.post(REGISTER, {

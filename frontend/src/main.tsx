@@ -45,7 +45,7 @@ const homeChildren = [
     { index: true, element: <Home /> },
     { path: 'about', element: <About /> },
     { path: 'user', element: <UserFlowLayout />, children: userFlowChildren },
-    { path: 'blog/:blogID', element: <Blog /> },
+    { path: 'blog/:blogSlug', element: <Blog /> },
 ]
 
 const router = createBrowserRouter([

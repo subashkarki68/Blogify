@@ -33,9 +33,9 @@ function AppNavbar() {
             findUserShortName(user?.fName || '', user?.lName || ''),
         )
     }, [user])
-    const handleLinks = {
-        login: () => navigate('/user/login'),
-    }
+    // const handleLinks = {
+    //     login: () => navigate('/user/login'),
+    // }
 
     return (
         <header className="mb-8 flex w-full shrink-0 justify-between border-b-2 p-2 shadow-lg">
