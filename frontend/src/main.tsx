@@ -16,6 +16,7 @@ import About from './pages/About.tsx'
 import Blogs from './pages/admin/Blogs.tsx'
 import Dashboard from './pages/admin/Dashboard.tsx'
 import Users from './pages/admin/Users.tsx'
+import Blog from './pages/Blog.tsx'
 import Home from './pages/Home.tsx'
 import User from './pages/User.tsx'
 import ForgotPassword from './pages/userflow/ForgotPassword.tsx'
@@ -44,6 +45,7 @@ const homeChildren = [
     { index: true, element: <Home /> },
     { path: 'about', element: <About /> },
     { path: 'user', element: <UserFlowLayout />, children: userFlowChildren },
+    { path: 'blog/:blogID', element: <Blog /> },
 ]
 
 const router = createBrowserRouter([

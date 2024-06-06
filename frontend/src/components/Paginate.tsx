@@ -52,7 +52,12 @@ function Paginate({
     return (
         <Pagination>
             <PaginationContent>
-                <Select onValueChange={(value) => setLimit(+value)}>
+                <Select
+                    onValueChange={(value) => {
+                        setPage(1)
+                        setLimit(+value)
+                    }}
+                >
                     <SelectTrigger className="w-[100px]">
                         <SelectValue placeholder="Limit" />
                     </SelectTrigger>

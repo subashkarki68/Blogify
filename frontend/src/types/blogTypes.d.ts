@@ -5,7 +5,7 @@ export interface BlogState {
     content: string
     createdAt: string
     updatedAt: string
-    status: 'published' | 'draft'
+    status: 'draft' | 'published'
     slug: string
     pictureUrl?: string
     timeAgo: string

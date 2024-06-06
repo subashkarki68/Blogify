@@ -15,6 +15,7 @@ import { Input } from './ui/input'
 
 function Search() {
     const [search, setSearch] = useState('')
+    const [isSearching, setIsSearching] = useState(false)
     const [term] = useDebounce(search, 500)
     const { GET_PUBLISHED_BLOGS } = URLS
 
@@ -33,21 +34,27 @@ function Search() {
                     type="search"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    onFocus={() => setIsSearching(true)}
+                    onBlur={() => setIsSearching(false)}
                 />
                 {isLoading && (
                     <LoaderCircle className="absolute right-2 top-1/3 h-5 w-5 animate-spin" />
                 )}
                 <div className="shadow-3xl absolute z-50 w-[60vw] rounded-2xl bg-secondary text-secondary-foreground">
-                    {search && data?.data?.length < 1 && (
+                    {search && isSearching && data?.data?.length < 1 && (
                         <div className="m-5 text-destructive">
                             No results found
                         </div>
                     )}
                     {search &&
+                        isSearching &&
                         data?.data?.length >= 1 &&
-                        data?.data?.map((b: any) => {
+                        data?.data?.map((b: any, i: string) => {
                             return (
-                                <Card className="m-5 cursor-pointer bg-secondary text-secondary-foreground shadow transition-all duration-500 ease-linear hover:shadow-2xl">
+                                <Card
+                                    key={i}
+                                    className="m-5 cursor-pointer bg-secondary text-secondary-foreground shadow transition-all duration-500 ease-linear hover:shadow-2xl"
+                                >
                                     <CardHeader>
                                         <CardTitle>{b.title}</CardTitle>
                                     </CardHeader>

@@ -1,5 +1,8 @@
+import { useParams } from 'react-router-dom'
+
 function Blog() {
-    return <div>Blog</div>
+    const { blogID } = useParams()
+    return <div>{blogID}</div>
 }
 
 export default Blog

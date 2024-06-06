@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 function UserFlowLayout() {
     return (
-        <div className="flex h-[80%] w-full items-center justify-center">
+        <div className="m-auto min-h-full w-[80%]">
             <Outlet />
         </div>
     )
