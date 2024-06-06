@@ -1,4 +1,3 @@
-import { Blog } from '@/context/BlogContextProvider'
 import { useParams } from 'react-router-dom'
 
 function Blog() {
@@ -10,7 +9,6 @@ function Blog() {
     //             .get(BLOGS_URL + `/${blogSlug}`)
     //             .then((res) => res.data.data),
     // })
-    console.log(data)
     return <div>{blogSlug}</div>
 }
 
