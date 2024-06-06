@@ -36,6 +36,8 @@ function Login() {
 
     const initialEmail =
         registrationPayload?.email || passwordReset?.email || ''
+    //TODO
+    console.log(initialEmail)
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [success, setSuccess] = useState<SuccessFailureStatus>({

@@ -49,6 +49,9 @@ function Register() {
         name: '',
     })
 
+    //TODO
+    console.log(setPayload)
+
     const navigate = useNavigate()
 
     const handleRegister = async (data: any) => {
