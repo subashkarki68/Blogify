@@ -21,12 +21,11 @@ import {
     UserRound,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function AppNavbar() {
     const [userShortName, setUserShortName] = useState('')
     const { user, logout } = useAuthContext()
-    const navigate = useNavigate()
 
     useEffect(() => {
         setUserShortName(
