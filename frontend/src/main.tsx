@@ -61,6 +61,10 @@ const router = createBrowserRouter([
         children: adminChildren,
         errorElement: <ErrorPage />,
     },
+    {
+        path: '/not-found',
+        element: <ErrorPage />,
+    },
 ])
 
 const queryClient = new QueryClient()
