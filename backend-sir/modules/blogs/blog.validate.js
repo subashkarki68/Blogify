@@ -15,7 +15,6 @@ const validate = (req, res, next) => {
   req.body.author = req.body.author || req.currentUser;
   const { error } = Schema.validate(req.body);
   if (error) {
-    console.log("error", req.body);
     next(error);
   }
   next();

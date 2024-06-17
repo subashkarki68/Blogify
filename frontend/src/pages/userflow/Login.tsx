@@ -111,7 +111,6 @@ function Login() {
         } catch (error: any) {
             console.error('error', error)
             const errorMSG = error?.response?.data.msg || 'Something went wrong'
-            console.log(errorMSG)
             setFailure({ status: true, message: errorMSG })
         } finally {
             setIsSubmitting(false)

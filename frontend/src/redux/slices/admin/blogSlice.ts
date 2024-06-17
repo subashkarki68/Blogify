@@ -125,7 +125,6 @@ const blogSlice = createSlice({
             action.payload.author = 'You'
             action.payload.status = 'draft'
             state.blogs.unshift(action.payload)
-            console.log(action.payload)
         })
     },
 })

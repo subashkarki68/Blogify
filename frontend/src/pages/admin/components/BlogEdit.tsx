@@ -16,7 +16,6 @@ const BlogEdit = ({ slug, title, content }: BlogEditProps) => {
     const dispatch: AppDispatch = useDispatch()
 
     const onSubmit = (data: any) => {
-        console.log('submitted with:', data)
         dispatch(
             updateBlog({
                 slug,

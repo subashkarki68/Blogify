@@ -27,7 +27,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const userLS = localStorage.getItem('userDetails')
 
     const initialUser = () => {
-        console.log(userLS)
         if (userLS !== null) return JSON.parse(userLS)
         return {
             userId: '',

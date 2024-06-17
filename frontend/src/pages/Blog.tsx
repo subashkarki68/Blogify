@@ -20,7 +20,6 @@ function Blog() {
             navigate('/not-found', { replace: true })
         }
     }, [data, isPending])
-    console.log(data)
     return (
         <div>
             {isPending && <p>Loading...</p>}
@@ -38,7 +37,7 @@ function Blog() {
                                 {data?.title}
                             </h2>
                             <div className="flex flex-row gap-10 text-gray-500">
-                                <h3>Author: {data?.author}</h3>
+                                <h3>Author: {data?.author?.name}</h3>
                                 <h3>
                                     Published:{' '}
                                     {formatDistanceToNow(data?.createdAt) +

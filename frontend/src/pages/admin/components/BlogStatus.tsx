@@ -20,7 +20,6 @@ const BlogStatus = ({
     )
     const handleCheck = (checked: boolean) => {
         setPublishedStatus(checked)
-        console.log('checked', checked)
         onStatusChange(slug, checked ? 'published' : 'draft')
     }
     return (

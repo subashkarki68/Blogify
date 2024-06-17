@@ -1,5 +1,6 @@
 const blogModel = require("./blog.model");
 const { generateSlug } = require("../../utils/textParser");
+const userModel = require("../users/user.model");
 
 const create = (payload) => {
   payload.slug = generateSlug(payload.title);
@@ -248,10 +249,18 @@ const getPublishedBlogs = async (search, page = 1, limit = 5) => {
 };
 
 const getBySlug = async (payload) => {
-  const existingBlog = await blogModel.findOne({
-    slug: payload.slug,
-    status: "published",
-  });
+  const existingBlog = await blogModel
+    .findOne({
+      slug: payload.slug,
+      status: "published",
+    })
+    .lean();
+  const author = await userModel.findOne({ _id: existingBlog.author });
+  existingBlog.author = {
+    _id: author._id,
+    name: author.name,
+    email: author.email,
+  };
   if (!existingBlog) throw new Error("Blog not found");
   return existingBlog;
 };
@@ -281,7 +290,6 @@ const updateBySlug = async (payload) => {
   if (roles.includes("user") && !author === blog.author) {
     throw new Error("Invalid Author");
   }
-  console.log(payload);
   const result = await blogModel.findOneAndUpdate(
     { _id: blog._id },
     { ...rest },

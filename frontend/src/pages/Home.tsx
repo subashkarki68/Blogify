@@ -2,6 +2,7 @@ import BlogCard from '@/components/BlogCard'
 import { TiltCard } from '@/components/TiltCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useBlogContext } from '@/context/BlogContextProvider'
+import { Link } from 'react-router-dom'
 import Paginate from '../components/Paginate'
 
 function Home() {
@@ -39,12 +40,15 @@ function Home() {
                     blogs.data.data.map((blog, i) => {
                         return (
                             <TiltCard key={i} className="w-full md:w-[30%]">
-                                <BlogCard
-                                    key={i}
-                                    className="w-ful h-full shadow-lg transition-all duration-300 ease-linear md:hover:-translate-y-4 md:hover:shadow-2xl"
-                                    title={blog.title}
-                                    content={blog.content}
-                                />
+                                <Link to={`/blog/${blog.slug}`}>
+                                    <p>{blog.author}</p>
+                                    <BlogCard
+                                        key={i}
+                                        className="w-ful h-full shadow-lg transition-all duration-300 ease-linear md:hover:-translate-y-4 md:hover:shadow-2xl"
+                                        title={blog.title}
+                                        content={blog.content}
+                                    />
+                                </Link>
                             </TiltCard>
                         )
                     })}

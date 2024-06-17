@@ -99,7 +99,6 @@ router.post("/verify-email", async (req, res, next) => {
 // LOGIN USER
 router.post("/generate-fp-token", async (req, res, next) => {
   try {
-    console.log(req.body);
     const result = await userController.generateFPToken(req.body);
     res.json({ data: result });
   } catch (e) {
