@@ -11,20 +11,18 @@ const nodemailer = require("nodemailer");
 // });
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: true,
   auth: {
-    type: "OAuth2",
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
-    clientId: process.env.OAUTH_CLIENTID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
   },
 });
 
 const mail = async (to, subject, message) => {
   const info = await transporter.sendMail({
-    from: '"Blogify" <support@blogify.com>',
+    from: process.env.SMTP_USER,
     to,
     subject,
     html: `<b>${message}</b>`,
