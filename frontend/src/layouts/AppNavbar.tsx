@@ -149,11 +149,11 @@ function AppNavbar() {
                                     <Link to={'/user'}>My Profile</Link>
                                 </DropdownMenuItem>
                             )}
-                            {user.userId && (
+                            {/* {user.userId && (
                                 <DropdownMenuItem className="cursor-pointer">
                                     <Link to={'/bookmarks'}>Bookmarks</Link>
                                 </DropdownMenuItem>
-                            )}
+                            )} */}
                             {user.userId && (
                                 <DropdownMenuItem
                                     onClick={logout}
