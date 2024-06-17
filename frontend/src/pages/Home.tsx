@@ -3,12 +3,23 @@ import { TiltCard } from '@/components/TiltCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useBlogContext } from '@/context/BlogContextProvider'
 import { Link } from 'react-router-dom'
+import HomeCover from '../assets/home-cover.jpg'
 import Paginate from '../components/Paginate'
 
 function Home() {
     const { blogs } = useBlogContext()
     return (
         <div>
+            <div className="mb-10 w-full">
+                <h2 className="my-5 text-center text-4xl font-semibold">
+                    Welcome to Blogify
+                </h2>
+                <img
+                    src={HomeCover}
+                    alt="Cover Image"
+                    className="h-[100dvh] w-full object-cover"
+                />
+            </div>
             {blogs.error && <p>Error Fetching blogs...</p>}
             <div className="flex w-full flex-wrap justify-center gap-10">
                 <Paginate
