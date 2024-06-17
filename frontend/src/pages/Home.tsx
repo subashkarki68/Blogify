@@ -41,7 +41,6 @@ function Home() {
                         return (
                             <TiltCard key={i} className="w-full md:w-[30%]">
                                 <Link to={`/blog/${blog.slug}`}>
-                                    <p>{blog.author}</p>
                                     <BlogCard
                                         key={i}
                                         className="w-ful h-full shadow-lg transition-all duration-300 ease-linear md:hover:-translate-y-4 md:hover:shadow-2xl"
