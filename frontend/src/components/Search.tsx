@@ -4,6 +4,7 @@ import { axiosInstance } from '@/utils/api'
 import { useQuery } from '@tanstack/react-query'
 import { LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
     Card,
     CardContent,
@@ -35,7 +36,11 @@ function Search() {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     onFocus={() => setIsSearching(true)}
-                    onBlur={() => setIsSearching(false)}
+                    onBlur={() => {
+                        setTimeout(() => {
+                            setIsSearching(false)
+                        }, 100)
+                    }}
                 />
                 {isLoading && (
                     <LoaderCircle className="absolute right-2 top-1/3 h-5 w-5 animate-spin" />
@@ -51,19 +56,22 @@ function Search() {
                         data?.data?.length >= 1 &&
                         data?.data?.map((b: any, i: string) => {
                             return (
-                                <Card
-                                    key={i}
-                                    className="m-5 cursor-pointer bg-secondary text-secondary-foreground shadow transition-all duration-500 ease-linear hover:shadow-2xl"
-                                >
-                                    <CardHeader>
-                                        <CardTitle>{b.title}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <CardDescription>
-                                            {b.content.slice(0, 200) + '...'}
-                                        </CardDescription>
-                                    </CardContent>
-                                </Card>
+                                <Link to={`/blog/${b.slug}`}>
+                                    <Card
+                                        key={i}
+                                        className="m-5 cursor-pointer bg-secondary text-secondary-foreground shadow transition-all duration-500 ease-linear hover:shadow-2xl"
+                                    >
+                                        <CardHeader>
+                                            <CardTitle>{b.title}</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <CardDescription>
+                                                {b.content.slice(0, 200) +
+                                                    '...'}
+                                            </CardDescription>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             )
                         })}
                 </div>

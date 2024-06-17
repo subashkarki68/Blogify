@@ -3,6 +3,7 @@ import { TiltCard } from '@/components/TiltCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useBlogContext } from '@/context/BlogContextProvider'
 import { Link } from 'react-router-dom'
+import Typewriter from 'typewriter-effect'
 import HomeCover from '../assets/home-cover.jpg'
 import Paginate from '../components/Paginate'
 
@@ -10,15 +11,42 @@ function Home() {
     const { blogs } = useBlogContext()
     return (
         <div>
-            <div className="mb-10 w-full">
-                <h2 className="my-5 text-center text-4xl font-semibold">
-                    Welcome to Blogify
-                </h2>
-                <img
-                    src={HomeCover}
-                    alt="Cover Image"
-                    className="h-[100dvh] w-full object-cover"
-                />
+            <div className="relative mb-10 w-full">
+                <div className="relative">
+                    <div>
+                        <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-black opacity-60"></div>
+                        <img
+                            src={HomeCover}
+                            alt="Cover Image"
+                            className="z-1 h-[100vh] w-full object-cover"
+                        />
+                    </div>
+                    <div className="absolute top-1/2">
+                        <h2 className="ml-10 text-7xl text-white">
+                            <Typewriter
+                                options={{
+                                    strings: [
+                                        'Welcome to Blogify',
+                                        'Engage',
+                                        'Elevate',
+                                        'Inspire',
+                                        'Connect',
+                                        'Discover',
+                                        'Empower',
+                                        'Enrich',
+                                        'Transform',
+                                        'Innovate',
+                                        'Enlighten',
+                                        'Explore',
+                                        'Create',
+                                    ],
+                                    autoStart: true,
+                                    loop: true,
+                                }}
+                            />
+                        </h2>
+                    </div>
+                </div>
             </div>
             {blogs.error && <p>Error Fetching blogs...</p>}
             <div className="flex w-full flex-wrap justify-center gap-10">
