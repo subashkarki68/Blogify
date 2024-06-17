@@ -15,20 +15,20 @@ function VerifyEmail() {
     const location = useLocation()
     const navigate = useNavigate()
     const email = location?.state?.email || ''
-    const password = location?.state?.password || ''
+    const name = location?.state?.name || ''
     const [token, setToken] = useState('')
     const [isVerifying, setIsVerifying] = useState(false)
     const [isWrongToken, setIsWrongToken] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
 
     const inputOtpSlotClasses = `text-xl md:h-16 md:w-16 ${isWrongToken && 'border-red-900 text-red-900 dark:border-red-400 dark:text-red-400'}`
-
+    console.log('location', location)
     useEffect(() => {
-        if (!email || !password) {
+        if (!email || !name) {
             // Redirect to the home page
             navigate('/')
         }
-    }, [email]) // Only run this effect when email or password changes
+    }, [email, name])
 
     const handleChange = (value: any) => {
         if (successMessage.length > 0) {

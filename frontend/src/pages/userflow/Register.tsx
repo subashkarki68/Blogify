@@ -70,7 +70,9 @@ function Register() {
                         status: true,
                         message: 'Registration Successful',
                     })
-                    navigate('/user/verify-email', { state: payload })
+                    navigate('/user/verify-email', {
+                        state: { email: data.email, name: data.name },
+                    })
                     return setFailure((prev) => ({ ...prev, status: false }))
                 }
                 return setFailure({
