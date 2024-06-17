@@ -32,7 +32,7 @@ function Login() {
     const location = useLocation()
     const navigate = useNavigate()
     const registrationPayload = location?.state || ''
-    const { passwordReset } = location.state || ''
+    const { passwordReset } = location?.state || ''
 
     const initialEmail =
         registrationPayload?.email || passwordReset?.email || ''

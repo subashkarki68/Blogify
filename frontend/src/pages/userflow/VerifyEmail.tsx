@@ -50,7 +50,7 @@ function VerifyEmail() {
             })
             if (res.status === 200) {
                 setSuccessMessage(res?.data?.result?.message || 'Success')
-                navigate('/user/login', { state: { email, password } })
+                navigate('/user/login', { state: { email } })
             }
         } catch (error: any) {
             setIsWrongToken(true)
