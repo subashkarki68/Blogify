@@ -24,6 +24,20 @@ app.use(cookieParser(CookieSecret));
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json()); // to allow json as request body
+
+//Check if static folder is present
+const fs = require('fs');
+const path = require('path');
+
+// Define the directory path
+const dirPath = path.join(__dirname, 'public/images/users');
+
+// Check if the directory exists, if not, create it
+if (!fs.existsSync(dirPath)) {
+  console.log(`Directory ${dirPath} does not exist, creating one...`);
+  fs.mkdirSync(dirPath, { recursive: true });
+}
+
 app.use("/static", express.static("public"));
 app.use((req, res, next) => {
   res.setHeader(
