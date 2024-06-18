@@ -24,7 +24,7 @@ app.use(cookieParser(CookieSecret));
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json()); // to allow json as request body
-app.use("/assets", express.static("public"));
+app.use("/static", express.static("public"));
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",

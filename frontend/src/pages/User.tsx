@@ -21,7 +21,7 @@ import { BASE_URL, USERS_URL } from "../constants/index"
 function User() {
     const { user } = useAuthContext()
     const navigate = useNavigate()
-    const [profileImage, setProfileImage] = useState(`${BASE_URL}/assets${user?.pictureUrl}`);
+    const [profileImage, setProfileImage] = useState(`${BASE_URL}/static${user?.pictureUrl}`);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleImageUploadClick = () => {
         if (fileInputRef.current) {
@@ -46,7 +46,7 @@ function User() {
               withCredentials: true,
             });
             console.log("Image uploaded successfully:", response.data.data.pictureUrl);
-            setProfileImage(`${BASE_URL}/assets${response.data.data.pictureUrl}`)
+            setProfileImage(`${BASE_URL}/static${response.data.data.pictureUrl}`)
              // Update localStorage
              const userDetails = JSON.parse(localStorage.getItem("userDetails") || "{}");
              userDetails.pictureUrl = response.data.data.pictureUrl;
