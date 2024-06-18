@@ -126,6 +126,7 @@ const login = async (payload) => {
       isActive: user.isActive,
       emailVerified: user.emailVerified,
       createdAt: user.createdAt,
+      pictureUrl: user.pictureUrl
     },
   };
 };
@@ -208,6 +209,22 @@ const resetPassword = async (payload) => {
   return "Password reset successfully";
 };
 
+//Function to upload the user's profile image URL in the database
+const updateProfileImage = async (userId, profileImage) => {
+  try {
+    const user = await userModel.findById(userId).select("-password");
+    if (!user) throw new Error("User not found");
+    console.log("Profile Image", profileImage)
+    user.pictureUrl = profileImage;
+    await user.save();
+    return {pictureUrl : profileImage};
+  } catch (error) {
+    console.error("Error updating profile image:", error);
+    throw error;
+  }
+};
+
+
 const blockUser = async (payload) => {
   const { email } = payload;
   const user = await userModel.findOne({ email });
@@ -243,4 +260,5 @@ module.exports = {
   updateProfile,
   verifyEmailToken,
   changeForgottenPassword,
+  updateProfileImage
 };

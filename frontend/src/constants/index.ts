@@ -1,7 +1,7 @@
 export const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:8000'
 
 const API_URL = '/api/v1'
-const USERS_URL = API_URL + '/users'
+export const USERS_URL = API_URL + '/users'
 export const BLOGS_URL = API_URL + '/blogs'
 
 export const URLS = {

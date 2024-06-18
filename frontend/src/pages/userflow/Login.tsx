@@ -65,6 +65,7 @@ function Login() {
                 const email = res?.data?.result?.email || 'Unknown Email'
                 const roles = res?.data?.result?.roles || []
                 const userId = res?.data?.result?.user?._id || ''
+                const pictureUrl = res?.data?.result?.user?.pictureUrl || ""
                 let fName = ''
                 let lName = ''
                 if (name.length > 0) {
@@ -87,6 +88,7 @@ function Login() {
                         roles,
                         fName,
                         lName,
+                        pictureUrl
                     })
                     localStorage.setItem(
                         'userDetails',
@@ -97,6 +99,7 @@ function Login() {
                             roles,
                             fName,
                             lName,
+                            pictureUrl
                         }),
                     )
                     if (user?.roles?.includes('admin')) navigate('/admin')

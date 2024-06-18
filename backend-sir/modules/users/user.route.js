@@ -186,6 +186,30 @@ router.get(
   }
 );
 
+//Upload profile image
+router.post(
+  "/upload-profile-image",
+  checkRole(["admin", "user"]),
+  upload.single("profileImage"),
+  async (req, res, next) => {
+    try {
+      if (req.file) {
+        console.log("File received:", req.file);
+        req.body.profileImage = req.file.path.replace("public", "");
+      } else {
+        console.log("No file received");
+      }
+      const result = await userController.updateProfileImage(
+        req.currentUser,
+        req.body.profileImage
+      );
+      res.json({data:result});
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 router.post("/logout", checkRole(["admin", "user"]), (req, res) => {
   // remove token from cookies
   res.clearCookie("access_token");

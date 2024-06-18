@@ -13,6 +13,7 @@ export interface User {
     roles: string[]
     fName?: string
     lName?: string
+    pictureUrl?:string
 }
 
 interface AuthContextType {
@@ -35,6 +36,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             roles: [''],
             fName: '',
             lName: '',
+            pictureUrl: ''
         }
     }
     const [user, setUser] = useState(initialUser())

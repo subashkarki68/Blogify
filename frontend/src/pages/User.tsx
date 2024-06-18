@@ -12,17 +12,59 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { useAuthContext } from '@/context/AuthProvider'
+import { axiosInstance } from '@/utils/api'
 import capitalCase from '@/utils/capitalCase'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { BASE_URL, USERS_URL } from "../constants/index"
 
 function User() {
     const { user } = useAuthContext()
     const navigate = useNavigate()
+    const [profileImage, setProfileImage] = useState(`${BASE_URL}/assets${user?.pictureUrl}`);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const handleImageUploadClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
 
     useEffect(() => {
         if (!user?.userId) navigate('/')
     }, [user])
+
+    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+          const formData = new FormData();
+          formData.append("profileImage", event.target.files[0]);
+      
+          try {
+            const response = await axiosInstance.post(`${USERS_URL}/upload-profile-image`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              withCredentials: true,
+            });
+            console.log("Image uploaded successfully:", response.data.data.pictureUrl);
+            setProfileImage(`${BASE_URL}/assets${response.data.data.pictureUrl}`)
+             // Update localStorage
+             const userDetails = JSON.parse(localStorage.getItem("userDetails") || "{}");
+             userDetails.pictureUrl = response.data.data.pictureUrl;
+             localStorage.setItem("userDetails", JSON.stringify(userDetails));
+          } catch (error: any) {
+            console.error("Error uploading image:", error);
+            if (error.response) {
+              console.error("Server responded with error:", error.response.data);
+              console.error("Status code:", error.response.status);
+            } else if (error.request) {
+              console.error("No response received:", error.request);
+            } else {
+              console.error("Error setting up the request:", error.message);
+            }
+          }
+        }
+      };
+    
 
     const initials = user?.fName
         ? user?.lName
@@ -37,8 +79,8 @@ function User() {
                     <div className="flex flex-col items-center gap-4">
                         <Avatar className="h-24 w-24">
                             <AvatarImage
-                                alt="@shadcn"
-                                src="/placeholder-avatar.jpg"
+                                alt={user?.fName}
+                                src={profileImage || "/placeholder-avatar.jps"}
                             />
                             <AvatarFallback>{initials}</AvatarFallback>
                         </Avatar>
@@ -71,16 +113,24 @@ function User() {
                                     <div className="flex items-center gap-4">
                                         <Avatar className="h-16 w-16">
                                             <AvatarImage
-                                                alt="@shadcn"
-                                                src="/placeholder-avatar.jpg"
+                                                alt={user?.fName}
+                                                src={profileImage || "/placeholder-avatar.jps"}
                                             />
                                             <AvatarFallback>
                                                 {initials}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <Button variant="outline">
+                                        
+                                        <Button variant="outline" onClick={handleImageUploadClick}>
                                             Change
                                         </Button>
+                                        <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            style={{ display: 'none' }}
+                                            onChange={handleImageChange}
+                                            accept="image/jpeg, image/png, image/gif"
+                                        />
                                     </div>
                                 </div>
                                 <div className="space-y-2">

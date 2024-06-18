@@ -51,6 +51,7 @@ function Register() {
 
     //TODO
     console.log(setPayload)
+    console.log(payload)
 
     const navigate = useNavigate()
 
