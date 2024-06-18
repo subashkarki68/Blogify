@@ -5,8 +5,8 @@ const { sub } = require("date-fns");
 const mongoose = require("mongoose");
 const blogController = require("../modules/blogs/blog.controller");
 
-const user1 = "660d92ea59336b069313f02b";
-const user2 = "660dc638eaaf9ca27382613a";
+const user1 = "66707afa34630646b58db123";
+const user2 = "66707bed34630646b58db149";
 console.log("Dotenv loaded:", require("dotenv").config().loaded);
 
 const setup = {
