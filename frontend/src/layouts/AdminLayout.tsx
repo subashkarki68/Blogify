@@ -22,7 +22,7 @@ function AdminLayout() {
     if (user.roles.includes('admin')) {
         adminContent = (
             //TODO: when there is no border there is small whitespace in bottom
-            <div className="min-h-[100vh] w-[100vw] bg-gradient-to-r from-indigo-800 to-indigo-500 text-amber-400">
+            <div className="min-h-[100vh] border border-black w-[100vw] bg-gradient-to-r from-indigo-800 to-indigo-500 text-amber-400">
                 <AdminSidebar className={`${backBlur ? blurClasses : ''}`} />
                 <div>
                     <AdminNavbar blurToggle={blurToggle} className="ml-[250]" />

@@ -5,8 +5,13 @@ const { sub } = require("date-fns");
 const mongoose = require("mongoose");
 const blogController = require("../modules/blogs/blog.controller");
 
+//Local
 const user1 = "66707afa34630646b58db123";
 const user2 = "66707bed34630646b58db149";
+
+// //Remote DB
+// const user1 = "66712b74bbc1483cd1ec457b";
+// const user2 = "66712f40924a6acae438f63e";
 console.log("Dotenv loaded:", require("dotenv").config().loaded);
 
 const setup = {

@@ -11,7 +11,7 @@ export interface UserState {
 }
 
 export interface UsersState {
-    users: UsersState[]
+    users: UserState[]
     status: 'idle' | 'loading' | 'succeeded' | 'failed'
     error: string | undefined
 }

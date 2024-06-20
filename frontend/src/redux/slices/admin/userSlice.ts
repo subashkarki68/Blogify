@@ -1,6 +1,6 @@
 import { URLS } from '@/constants'
 import { RootState } from '@/redux/store'
-import { UsersState } from '@/types/userTypes'
+import { UserState, UsersState } from '@/types/userTypes'
 import { axiosInstance } from '@/utils/api'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
@@ -12,8 +12,9 @@ const initialState: UsersState = {
 
 const fetchUsersUrl = URLS.ADMIN.GET_ALL_USERS
 
-//TODO: ADD other URLS
-const updateUserIsActiveUrl = (_id: string) => URLS.ADMIN.UPDATE_USER_ISACTIVE
+//TODO: ADD other URLS```
+// const updateUserIsActiveUrl = (_id: string) => URLS.ADMIN.UPDATE_USER_ISACTIVE
+
 //
 
 export const fetchUsers = createAsyncThunk(
@@ -23,8 +24,7 @@ export const fetchUsers = createAsyncThunk(
         const response = await axiosInstance.get(
             `${fetchUsersUrl}?limit=${limit}`,
         )
-        console.log('All Users', response)
-        return response.data.data
+        return response.data.data.data
     },
 )
 
@@ -39,7 +39,7 @@ const userSlice = createSlice({
         builder.addCase(fetchUsers.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.users = []
-            // action.payload.map((user: UserState) => state.users.push(user))
+            action.payload.map((user: UserState) => state.users.push(user))
             // state.users.map((user) => {
             //     user.createdAt = formatDistanceToNow(user.createdAt) + 'ago'
             // })
@@ -52,6 +52,8 @@ const userSlice = createSlice({
 })
 
 export const selectAllUsers = (state: RootState) => state.users.users
+export const userStatus = (state:RootState) => state.users.status
+export const userError = (state: RootState) => state.users.error
 
 export const {} = userSlice.actions
 export default userSlice.reducer

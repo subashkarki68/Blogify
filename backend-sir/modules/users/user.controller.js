@@ -36,6 +36,11 @@ const list = async (search, page = 1, limit = 1) => {
           {
             $limit: +limit,
           },
+          {
+            $project: {
+              password:0
+            }
+          }
         ],
       },
     },
