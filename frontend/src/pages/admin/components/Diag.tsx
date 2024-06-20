@@ -14,7 +14,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 interface DeleteDiagProps {
     trigger: string
     title: string
-    desc: string
+    desc?: string
     action: () => void
 }
 

@@ -56,9 +56,12 @@ function AdminSidebar({ className }: { className: string }) {
                     <HomeIcon className="h-4 w-4" />
                     Blogs
                 </li>
-                <li className={liClasses}>
+                <li
+                    className={liClasses}
+                    onClick={() => navigate('/admin/userManagement')}
+                >
                     <HomeIcon className="h-4 w-4" />
-                    Dashboard
+                    User Management
                 </li>
                 <li className={liClasses}>
                     <HomeIcon className="h-4 w-4" />

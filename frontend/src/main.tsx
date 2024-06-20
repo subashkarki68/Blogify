@@ -15,7 +15,7 @@ import UserFlowLayout from './layouts/UserFlowLayout.tsx'
 import About from './pages/About.tsx'
 import Blogs from './pages/admin/Blogs.tsx'
 import Dashboard from './pages/admin/Dashboard.tsx'
-import Users from './pages/admin/Users.tsx'
+import UserManagement from './pages/admin/UserManagement.tsx'
 import Blog from './pages/Blog.tsx'
 import Home from './pages/Home.tsx'
 import User from './pages/User.tsx'
@@ -29,7 +29,7 @@ import { store } from './redux/store.ts'
 const adminChildren = [
     { index: true, element: <Dashboard /> },
     { path: 'blogs', element: <Blogs /> },
-    { path: 'users', element: <Users /> },
+    { path: 'userManagement', element: <UserManagement /> },
 ]
 
 const userFlowChildren = [

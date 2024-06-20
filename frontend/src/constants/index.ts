@@ -19,5 +19,10 @@ export const URLS = {
         UPDATE_BLOG: BLOGS_URL,
         DELETE_BLOG: BLOGS_URL,
         ADD_BLOG: BLOGS_URL,
+        GET_ALL_USERS: USERS_URL,
+        UPDATE_USER_ISACTIVE: USERS_URL,
+        UPDATE_USER: USERS_URL,
+        DELETE_USER: USERS_URL,
+        ADD_USER: USERS_URL,
     },
 }
