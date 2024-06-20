@@ -16,55 +16,71 @@ import { axiosInstance } from '@/utils/api'
 import capitalCase from '@/utils/capitalCase'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BASE_URL, USERS_URL } from "../constants/index"
+import { BASE_URL, USERS_URL } from '../constants/index'
 
 function User() {
     const { user } = useAuthContext()
     const navigate = useNavigate()
-    const [profileImage, setProfileImage] = useState(`${BASE_URL}/static${user?.pictureUrl}`);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [profileImage, setProfileImage] = useState(
+        `${BASE_URL}/static${user?.pictureUrl}`,
+    )
+    const fileInputRef = useRef<HTMLInputElement>(null)
     const handleImageUploadClick = () => {
         if (fileInputRef.current) {
-            fileInputRef.current.click();
+            fileInputRef.current.click()
         }
-    };
+    }
 
     useEffect(() => {
         if (!user?.userId) navigate('/')
     }, [user])
 
-    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         if (event.target.files && event.target.files[0]) {
-          const formData = new FormData();
-          formData.append("profileImage", event.target.files[0]);
-      
-          try {
-            const response = await axiosInstance.post(`${USERS_URL}/upload-profile-image`, formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-              withCredentials: true,
-            });
-            console.log("Image uploaded successfully:", response.data.data.pictureUrl);
-            setProfileImage(`${BASE_URL}/static${response.data.data.pictureUrl}`)
-             // Update localStorage
-             const userDetails = JSON.parse(localStorage.getItem("userDetails") || "{}");
-             userDetails.pictureUrl = response.data.data.pictureUrl;
-             localStorage.setItem("userDetails", JSON.stringify(userDetails));
-          } catch (error: any) {
-            console.error("Error uploading image:", error);
-            if (error.response) {
-              console.error("Server responded with error:", error.response.data);
-              console.error("Status code:", error.response.status);
-            } else if (error.request) {
-              console.error("No response received:", error.request);
-            } else {
-              console.error("Error setting up the request:", error.message);
+            const formData = new FormData()
+            formData.append('profileImage', event.target.files[0])
+
+            try {
+                const response = await axiosInstance.post(
+                    `${USERS_URL}/upload-profile-image`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        withCredentials: true,
+                    },
+                )
+                setProfileImage(
+                    `${BASE_URL}/static${response.data.data.pictureUrl}`,
+                )
+                // Update localStorage
+                const userDetails = JSON.parse(
+                    localStorage.getItem('userDetails') || '{}',
+                )
+                userDetails.pictureUrl = response.data.data.pictureUrl
+                localStorage.setItem('userDetails', JSON.stringify(userDetails))
+            } catch (error: any) {
+                console.error('Error uploading image:', error)
+                if (error.response) {
+                    console.error(
+                        'Server responded with error:',
+                        error.response.data,
+                    )
+                    console.error('Status code:', error.response.status)
+                } else if (error.request) {
+                    console.error('No response received:', error.request)
+                } else {
+                    console.error(
+                        'Error setting up the request:',
+                        error.message,
+                    )
+                }
             }
-          }
         }
-      };
-    
+    }
 
     const initials = user?.fName
         ? user?.lName
@@ -80,7 +96,7 @@ function User() {
                         <Avatar className="h-24 w-24">
                             <AvatarImage
                                 alt={user?.fName}
-                                src={profileImage || "/placeholder-avatar.jps"}
+                                src={profileImage || '/placeholder-avatar.jps'}
                             />
                             <AvatarFallback>{initials}</AvatarFallback>
                         </Avatar>
@@ -114,14 +130,20 @@ function User() {
                                         <Avatar className="h-16 w-16">
                                             <AvatarImage
                                                 alt={user?.fName}
-                                                src={profileImage || "/placeholder-avatar.jps"}
+                                                src={
+                                                    profileImage ||
+                                                    '/placeholder-avatar.jps'
+                                                }
                                             />
                                             <AvatarFallback>
                                                 {initials}
                                             </AvatarFallback>
                                         </Avatar>
-                                        
-                                        <Button variant="outline" onClick={handleImageUploadClick}>
+
+                                        <Button
+                                            variant="outline"
+                                            onClick={handleImageUploadClick}
+                                        >
                                             Change
                                         </Button>
                                         <input

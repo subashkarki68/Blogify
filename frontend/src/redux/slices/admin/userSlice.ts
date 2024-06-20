@@ -11,6 +11,8 @@ const initialState: UsersState = {
 }
 
 const fetchUsersUrl = URLS.ADMIN.GET_ALL_USERS
+const updateEmailVerificationUrl = URLS.ADMIN.UPDATE_USER_EMAIL_VERIFICATION
+const updateIsActiveUrl = URLS.ADMIN.UPDATE_IS_ACTIVE
 
 //TODO: ADD other URLS```
 // const updateUserIsActiveUrl = (_id: string) => URLS.ADMIN.UPDATE_USER_ISACTIVE
@@ -26,6 +28,22 @@ export const fetchUsers = createAsyncThunk(
         )
         return response.data.data.data
     },
+)
+
+export const updateEmailVerified = createAsyncThunk(
+    'adminUser/updateEmailVerified',
+    async(payload:{email:string,emailVerified:boolean})=>{
+        return await axiosInstance.patch(updateEmailVerificationUrl,{email:payload.email, status:payload.emailVerified})
+        
+    }
+    
+)
+
+export const updateIsActive = createAsyncThunk(
+    'adminUser/updateIsActive',
+    async(payload:{email:string,isActive:boolean})=>{
+       return await axiosInstance.patch(updateIsActiveUrl,{email:payload.email})
+    }
 )
 
 const userSlice = createSlice({

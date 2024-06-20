@@ -29,7 +29,7 @@ const upload = multer({ storage: storage });
 router.get("/", checkRole(["admin"]), async (req, res, next) => {
   try {
     const { limit, page, name, role } = req.query; // used for search, sorting and filter
-    const search = { name, role };
+    const search = { name, role, _id: { $ne: req.currentUser } };
     // Database Operation
     const result = await userController.list(search, page, limit);
     res.json({ data: result });
@@ -47,6 +47,22 @@ router.post("/", checkRole(["admin"]), validate, async (req, res, next) => {
     next(e);
   }
 });
+
+//Verify User's Email (Admin)
+router.patch(
+  "/verify-user-email",
+  checkRole(["admin"]),
+  async (req, res, next) => {
+    try {
+      const { email, status } = req.body;
+      const result = await userController.verifyUserEmail(email, status);
+      console.log("result from /verify", result);
+      res.json({ data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 // REGISTER USER
 router.post(
@@ -203,7 +219,7 @@ router.post(
         req.currentUser,
         req.body.profileImage
       );
-      res.json({data:result});
+      res.json({ data: result });
     } catch (e) {
       next(e);
     }

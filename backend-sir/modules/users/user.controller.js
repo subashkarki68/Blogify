@@ -14,6 +14,11 @@ const create = (payload) => {
 const list = async (search, page = 1, limit = 1) => {
   const query = [];
 
+  // Exclude current user
+  if (search?._id) {
+    query.push({ $match: { _id: { $ne: search._id.$ne } } });
+  }
+
   if (search?.name) {
     query.push({
       $match: {
@@ -38,9 +43,9 @@ const list = async (search, page = 1, limit = 1) => {
           },
           {
             $project: {
-              password:0
-            }
-          }
+              password: 0,
+            },
+          },
         ],
       },
     },
@@ -131,7 +136,7 @@ const login = async (payload) => {
       isActive: user.isActive,
       emailVerified: user.emailVerified,
       createdAt: user.createdAt,
-      pictureUrl: user.pictureUrl
+      pictureUrl: user.pictureUrl,
     },
   };
 };
@@ -219,16 +224,30 @@ const updateProfileImage = async (userId, profileImage) => {
   try {
     const user = await userModel.findById(userId).select("-password");
     if (!user) throw new Error("User not found");
-    console.log("Profile Image", profileImage)
+    console.log("Profile Image", profileImage);
     user.pictureUrl = profileImage;
     await user.save();
-    return {pictureUrl : profileImage};
+    return { pictureUrl: profileImage };
   } catch (error) {
     console.error("Error updating profile image:", error);
     throw error;
   }
 };
 
+const verifyUserEmail = async (email, status) => {
+  try {
+    const user = await userModel.findOne({ email }).select("-password");
+    console.log("email - verification status", email, status);
+    if (!user) throw new Error("User Not Found");
+    user.emailVerified = status;
+    await user.save();
+    console.log("User", user);
+    return user.emailVerified;
+  } catch (error) {
+    console.error("Error Veryfying email", error);
+    throw error;
+  }
+};
 
 const blockUser = async (payload) => {
   const { email } = payload;
@@ -265,5 +284,6 @@ module.exports = {
   updateProfile,
   verifyEmailToken,
   changeForgottenPassword,
-  updateProfileImage
+  updateProfileImage,
+  verifyUserEmail,
 };
