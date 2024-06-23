@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import '../app/globals.css'
 import AuthProvider from './context/AuthProvider.tsx'
 import { BlogContextProvider } from './context/BlogContextProvider.tsx'
@@ -13,12 +13,11 @@ import AdminLayout from './layouts/AdminLayout.tsx'
 import HomeLayout from './layouts/HomeLayout.tsx'
 import UserFlowLayout from './layouts/UserFlowLayout.tsx'
 import About from './pages/About.tsx'
-import Blogs from './pages/admin/Blogs.tsx'
-import Dashboard from './pages/admin/Dashboard.tsx'
-import UserManagement from './pages/admin/UserManagement.tsx'
 import Blog from './pages/Blog.tsx'
 import Home from './pages/Home.tsx'
 import User from './pages/User.tsx'
+import Blogs from './pages/admin/Blogs.tsx'
+import UserManagement from './pages/admin/UserManagement.tsx'
 import ForgotPassword from './pages/userflow/ForgotPassword.tsx'
 import Login from './pages/userflow/Login.tsx'
 import Register from './pages/userflow/Register.tsx'
@@ -27,7 +26,6 @@ import VerifyPasswordToken from './pages/userflow/VerifyPasswordToken.tsx'
 import { store } from './redux/store.ts'
 
 const adminChildren = [
-    { index: true, element: <Dashboard /> },
     { path: 'blogs', element: <Blogs /> },
     { path: 'userManagement', element: <UserManagement /> },
 ]

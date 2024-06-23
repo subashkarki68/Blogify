@@ -45,10 +45,6 @@ function AdminSidebar({ className }: { className: string }) {
                 </header>
             </div>
             <ul className="flex flex-col justify-between">
-                <li className={liClasses}>
-                    <HomeIcon className="h-4 w-4" />
-                    Dashboard
-                </li>
                 <li
                     className={liClasses}
                     onClick={() => navigate('/admin/blogs')}
@@ -62,22 +58,6 @@ function AdminSidebar({ className }: { className: string }) {
                 >
                     <HomeIcon className="h-4 w-4" />
                     User Management
-                </li>
-                <li className={liClasses}>
-                    <HomeIcon className="h-4 w-4" />
-                    Dashboard
-                </li>
-                <li className={liClasses}>
-                    <HomeIcon className="h-4 w-4" />
-                    Dashboard
-                </li>
-                <li className={liClasses}>
-                    <HomeIcon className="h-4 w-4" />
-                    Dashboard
-                </li>
-                <li className={liClasses}>
-                    <HomeIcon className="h-4 w-4" />
-                    Dashboard
                 </li>
             </ul>
             <div className="w-full">

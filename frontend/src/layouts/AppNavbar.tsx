@@ -85,14 +85,36 @@ function AppNavbar() {
                             {/* <CircleUserIcon className="h-8 w-8" /> */}
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuLabel>My Account:</DropdownMenuLabel>
+                            <DropdownMenuLabel>Account Menu:</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <Link to={'/user'}>Profile</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
+                            {!user.userId && (
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link to={'/user/login'}>Login</Link>
+                                </DropdownMenuItem>
+                            )}
+                            {!user.userId && (
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link to={'/user/register'}>Register</Link>
+                                </DropdownMenuItem>
+                            )}
+                            {user.userId && (
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link to={'/user'}>My Profile</Link>
+                                </DropdownMenuItem>
+                            )}
+                            {/* {user.userId && (
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link to={'/bookmarks'}>Bookmarks</Link>
+                                </DropdownMenuItem>
+                            )} */}
+                            {user.userId && (
+                                <DropdownMenuItem
+                                    onClick={logout}
+                                    className="cursor-pointer"
+                                >
+                                    Logout
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

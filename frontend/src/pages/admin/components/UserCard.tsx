@@ -14,15 +14,8 @@ import { UserState } from '@/types/userTypes'
 import { CheckCheckIcon, FilePenLineIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import Diag from './Diag'
 
-const UserCard = ({
-    user,
-    handleDelete,
-}: {
-    user: UserState
-    handleDelete: any
-}) => {
+const UserCard = ({ user }: { user: UserState }) => {
     const [isActive, setIsActive] = useState(user.isActive)
     const [emailVerified, setEmailVerified] = useState(user.emailVerified)
     const [isEditingName, setIsEditingName] = useState(false)
@@ -311,13 +304,6 @@ const UserCard = ({
                                 Active
                             </Label>
                         </div>
-                    </div>
-                    <div className="flex flex-row-reverse">
-                        <Diag
-                            trigger="Delete User"
-                            title="Are you sure you want to delete this User?"
-                            action={handleDelete}
-                        />
                     </div>
                 </CardContent>
             </Card>

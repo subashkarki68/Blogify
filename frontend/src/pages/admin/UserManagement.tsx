@@ -21,7 +21,6 @@ const UserManagement = () => {
         }
     }, [users, dispatch])
 
-    const handleDelete = () => {}
     return (
         <div>
             <div className="mb-10 pl-5">
@@ -37,13 +36,7 @@ const UserManagement = () => {
             <div className="ml-20 w-1/2">
                 {users &&
                     users.map((user) => {
-                        return (
-                            <UserCard
-                                key={user._id}
-                                user={user}
-                                handleDelete={handleDelete}
-                            />
-                        )
+                        return <UserCard key={user._id} user={user} />
                     })}
             </div>
         </div>
