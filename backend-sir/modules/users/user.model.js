@@ -17,7 +17,7 @@ const userSchema = new Schema(
     emailVerifyToken: { type: String },
     emailVerified: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = new model("User", userSchema);

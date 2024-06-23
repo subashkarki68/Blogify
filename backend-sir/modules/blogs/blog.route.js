@@ -18,7 +18,7 @@ router.post(
     } catch (e) {
       next(e);
     }
-  }
+  },
 );
 
 router.get("/", checkRole(["admin"]), async (req, res, next) => {
@@ -38,7 +38,7 @@ router.get("/my-blogs", checkRole(["user"]), async (req, res, next) => {
     const result = await Controller.getAuthorBlogs(
       req.currentUser,
       page,
-      limit
+      limit,
     );
     res.json({ data: result });
   } catch (e) {

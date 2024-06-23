@@ -55,7 +55,7 @@ const list = async (search, page = 1, limit = 1) => {
           $arrayElemAt: ["$metadata.total", 0],
         },
       },
-    }
+    },
   );
   const result = await userModel.aggregate(query);
   return {
@@ -82,7 +82,7 @@ const generateEmailToken = async (email, emailVerifyToken) => {
   await mail(
     email,
     "Verify your email",
-    `Your email verification token is ${emailVerifyToken}`
+    `Your email verification token is ${emailVerifyToken}`,
   );
 };
 const verifyEmailToken = async ({ email, emailVerifyToken }) => {
@@ -97,7 +97,7 @@ const verifyEmailToken = async ({ email, emailVerifyToken }) => {
   // user update with new password
   const updatedUser = await userModel.updateOne(
     { email },
-    { emailVerified: true, emailVerifyToken: "" }
+    { emailVerified: true, emailVerifyToken: "" },
   );
   if (!updatedUser) throw new Error("Process failed. Try again later");
   // return success message
@@ -183,7 +183,7 @@ const changeForgottenPassword = async (payload) => {
   // user update with new password
   const updatedUser = await userModel.updateOne(
     { email },
-    { password: hashPassword(newPassword), token: "" }
+    { password: hashPassword(newPassword), token: "" },
   );
   if (!updatedUser) throw new Error("Process failed. Try again later");
   // return success message
@@ -200,7 +200,7 @@ const changePassword = async (payload) => {
   if (!isValidOldPw) throw new Error("Password didn't match");
   const updateUser = await userModel.updateOne(
     { email },
-    { password: hashPassword(newPassword) }
+    { password: hashPassword(newPassword) },
   );
   if (!updateUser) throw new Error("Try again later");
   return "Password changed successfully";
@@ -213,7 +213,7 @@ const resetPassword = async (payload) => {
   if (!user) throw new Error("User not found");
   const updateUser = await userModel.updateOne(
     { email },
-    { password: hashPassword(newPassword) }
+    { password: hashPassword(newPassword) },
   );
   if (!updateUser) throw new Error("Try again later");
   return "Password reset successfully";

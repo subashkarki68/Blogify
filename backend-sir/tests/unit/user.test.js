@@ -13,7 +13,7 @@ const common = require("../common");
 jest.mock("../../utils/bcrypt", () => ({
   hashPassword: jest.fn((password) => "hashPassword"),
   comparePassword: jest.fn(
-    (password, hashPassword) => password === hashPassword
+    (password, hashPassword) => password === hashPassword,
   ),
 }));
 
@@ -25,7 +25,8 @@ jest.mock("../../utils/token", () => ({
 // Mock Mailer's mail function
 jest.mock("../../services/mailer", () => ({
   mail: jest.fn(
-    () => "<info>@mail.com<d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>"
+    () =>
+      "<info>@mail.com<d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>",
   ),
 }));
 
@@ -78,7 +79,7 @@ describe("User Registration Testing", () => {
     expect(mail).toHaveBeenCalledWith(
       "test@example.com",
       "Registration Completed",
-      "You are successfully registered. Thank you for registering."
+      "You are successfully registered. Thank you for registering.",
     );
   });
 
@@ -157,7 +158,7 @@ describe("User Verification Testing", () => {
 
     // Check the token generation result
     expect(tokenGenerationResult).toBe(
-      "Forget password token generated successfully"
+      "Forget password token generated successfully",
     );
 
     // Check if User model's findOne function was called with the correct arguments
@@ -169,14 +170,14 @@ describe("User Verification Testing", () => {
     // Check if User model's updateOne function was called with the correct arguments
     expect(userModel.updateOne).toHaveBeenCalledWith(
       { email: "test@example.com" },
-      { token: "123456" }
+      { token: "123456" },
     );
 
     // Check if Mailer's mail function was called with the correct arguments
     expect(mail).toHaveBeenCalledWith(
       "test@example.com",
       "Forget Password Token",
-      "Your token is 123456"
+      "Your token is 123456",
     );
   });
 
@@ -188,7 +189,7 @@ describe("User Verification Testing", () => {
 
     // Attempt to generate a forget password token without an email
     await expect(generateFPToken(payload)).rejects.toThrow(
-      "Email doesn't exist"
+      "Email doesn't exist",
     );
 
     // Check that User model's findOne function was not called
@@ -213,7 +214,7 @@ describe("User Verification Testing", () => {
 
     // Attempt to generate a forget password token for a non-existing user
     await expect(generateFPToken(payload)).rejects.toThrow(
-      "User doesn't exist"
+      "User doesn't exist",
     );
 
     // Check if User model's findOne function was called with the correct arguments
@@ -244,12 +245,12 @@ describe("User Verification Testing", () => {
 
     // Mock User model's updateOne function to simulate an update error
     userModel.updateOne.mockRejectedValueOnce(
-      new Error("Something went wrong. Try again later")
+      new Error("Something went wrong. Try again later"),
     );
 
     // Attempt to generate a forget password token with an update error
     await expect(generateFPToken(payload)).rejects.toThrow(
-      "Something went wrong. Try again later"
+      "Something went wrong. Try again later",
     );
 
     // Check if User model's findOne function was called with the correct arguments
@@ -261,7 +262,7 @@ describe("User Verification Testing", () => {
     // Check if User model's updateOne function was called with the correct arguments
     expect(userModel.updateOne).toHaveBeenCalledWith(
       { email: "test@example.com" },
-      { token: expect.any(String) }
+      { token: expect.any(String) },
     );
 
     // Check that Mailer's mail function was not called

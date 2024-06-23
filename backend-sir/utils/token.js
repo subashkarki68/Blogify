@@ -7,7 +7,7 @@ const generateAccessToken = (payload) => {
       data: payload,
     },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_DURATION }
+    { expiresIn: process.env.JWT_DURATION },
   );
 };
 

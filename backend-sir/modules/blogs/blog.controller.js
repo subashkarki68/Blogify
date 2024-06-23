@@ -46,7 +46,7 @@ const list = async (search, page = 1, limit = 5) => {
         _id: 1,
         pictureUrl: 1,
       },
-    }
+    },
   );
 
   if (search?.author) {
@@ -87,7 +87,7 @@ const list = async (search, page = 1, limit = 5) => {
       $project: {
         metadata: 0,
       },
-    }
+    },
   );
   const result = await blogModel.aggregate(query);
 
@@ -138,7 +138,7 @@ const getAuthorBlogs = async (userId, page = 1, limit = 5) => {
       $project: {
         metadata: 0,
       },
-    }
+    },
   );
 
   if (search?.author) {
@@ -230,7 +230,7 @@ const getPublishedBlogs = async (search, page = 1, limit = 5) => {
       $project: {
         metadata: 0,
       },
-    }
+    },
   );
   if (search?.author) {
     query.push({
@@ -296,7 +296,7 @@ const updateBySlug = async (payload) => {
     {
       new: true,
       upsert: true,
-    }
+    },
   );
   return result;
 };
@@ -307,7 +307,7 @@ const changeStatus = async (slug) => {
   return await blogModel.findOneAndUpdate(
     { slug },
     { status: blog.status === "draft" ? "published" : "draft" },
-    { new: true, upsert: true }
+    { new: true, upsert: true },
   );
 };
 

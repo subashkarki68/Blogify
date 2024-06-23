@@ -26,11 +26,11 @@ app.use(morgan("dev"));
 app.use(express.json()); // to allow json as request body
 
 //Check if static folder is present
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Define the directory path
-const dirPath = path.join(__dirname, 'public/images/users');
+const dirPath = path.join(__dirname, "public/images/users");
 
 // Check if the directory exists, if not, create it
 if (!fs.existsSync(dirPath)) {
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Origin",
     process.env.NODE_ENV === "production"
       ? "https://blogify.ruchirajkarki.com.np"
-      : "http://localhost:5173"
+      : "http://localhost:5173",
   );
   next();
 });
