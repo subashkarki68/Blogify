@@ -55,7 +55,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.12.2)
       nodemon:
-        specifier: ^3.0.3
+        specifier: ^3.1.0
         version: 3.1.0
 
 packages:

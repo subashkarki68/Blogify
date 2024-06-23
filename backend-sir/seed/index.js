@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 const blogController = require("../modules/blogs/blog.controller");
 
 //Local
-const user1 = "66707afa34630646b58db123";
-const user2 = "66707bed34630646b58db149";
+const user1 = "6674111fad7da8fbf78a0ed2";
+const user2 = "6674110ead7da8fbf78a0ecf";
 
 // //Remote DB
 // const user1 = "66712b74bbc1483cd1ec457b";

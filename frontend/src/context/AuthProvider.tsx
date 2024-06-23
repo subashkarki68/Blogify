@@ -1,6 +1,8 @@
 import { URLS } from '@/constants'
+import { resetUserState } from '@/redux/slices/admin/userSlice'
 import { axiosInstance } from '@/utils/api'
 import { createContext, useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 interface AuthProviderProps {
     children: React.ReactNode
@@ -13,7 +15,7 @@ export interface User {
     roles: string[]
     fName?: string
     lName?: string
-    pictureUrl?:string
+    pictureUrl?: string
 }
 
 interface AuthContextType {
@@ -26,6 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const userLS = localStorage.getItem('userDetails')
+    const dispatch = useDispatch()
 
     const initialUser = () => {
         if (userLS !== null) return JSON.parse(userLS)
@@ -36,7 +39,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             roles: [''],
             fName: '',
             lName: '',
-            pictureUrl: ''
+            pictureUrl: '',
         }
     }
     const [user, setUser] = useState(initialUser())
@@ -47,6 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const { LOGOUT } = URLS
         setUser('')
         localStorage.removeItem('userDetails')
+        dispatch(resetUserState())
         try {
             const response = await axiosInstance.post(LOGOUT)
             return response

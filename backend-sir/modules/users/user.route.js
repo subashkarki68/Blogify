@@ -64,6 +64,21 @@ router.patch(
   }
 );
 
+//Update Profile (Admin)
+router.patch(
+  "/update-by-admin",
+  checkRole(["admin"]),
+  async (req, res, next) => {
+    try {
+      const { _id } = req.body;
+      const result = await userController.updateById(_id, req.body);
+      res.json({ data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // REGISTER USER
 router.post(
   "/register",
