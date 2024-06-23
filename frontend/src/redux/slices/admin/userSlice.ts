@@ -1,4 +1,4 @@
-import { URLS } from '@/constants'
+import { URLS, USERS_URL } from '@/constants'
 import { RootState } from '@/redux/store'
 import { UserState, UsersState } from '@/types/userTypes'
 import { axiosInstance } from '@/utils/api'
@@ -15,6 +15,7 @@ const updateEmailVerificationUrl = URLS.ADMIN.UPDATE_USER_EMAIL_VERIFICATION
 const updateIsActiveUrl = URLS.ADMIN.UPDATE_IS_ACTIVE
 const updateUserUrl = URLS.ADMIN.UPDATE_USER
 const resetPasswordUrl = URLS.ADMIN.RESET_PASSWORD
+const addUserUrl = USERS_URL
 
 //TODO: ADD other URLS```
 // const updateUserIsActiveUrl = (_id: string) => URLS.ADMIN.UPDATE_USER_ISACTIVE
@@ -61,6 +62,15 @@ export const resetPassword = createAsyncThunk(
     async(payload:{email:string,newPassword:string})=>{
         const result = await axiosInstance.post(resetPasswordUrl,{email:payload.email,newPassword:payload.newPassword})
         return result.data // Only return the serializable part
+    }
+)
+
+export const addUser = createAsyncThunk(
+    'adminUSer/addUser',
+    async(payload)=>{
+        const result = await axiosInstance.post(addUserUrl,payload)
+        console.log("Add NEW USer",result)
+        return result
     }
 )
 

@@ -26,6 +26,7 @@ import VerifyPasswordToken from './pages/userflow/VerifyPasswordToken.tsx'
 import { store } from './redux/store.ts'
 
 const adminChildren = [
+    { index: true, element: <Blogs /> },
     { path: 'blogs', element: <Blogs /> },
     { path: 'userManagement', element: <UserManagement /> },
 ]

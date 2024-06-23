@@ -22,13 +22,13 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
-interface RegisterPayload {
+export interface RegisterPayload {
     email: string
     password: string
     name: string
 }
 
-interface SuccessFailureStatus {
+export interface SuccessFailureStatus {
     status: boolean
     message: string
 }
