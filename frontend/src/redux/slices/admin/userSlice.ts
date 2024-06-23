@@ -35,43 +35,58 @@ export const fetchUsers = createAsyncThunk(
 
 export const updateEmailVerified = createAsyncThunk(
     'adminUser/updateEmailVerified',
-    async(payload:{email:string,emailVerified:boolean})=>{
-        const response = await axiosInstance.patch(updateEmailVerificationUrl,{email:payload.email, status:payload.emailVerified})
+    async (payload: { email: string; emailVerified: boolean }) => {
+        const response = await axiosInstance.patch(updateEmailVerificationUrl, {
+            email: payload.email,
+            status: payload.emailVerified,
+        })
         return response.data // Only return the serializable part
-    }
+    },
 )
 export const updateIsActive = createAsyncThunk(
     'adminUser/updateIsActive',
-    async(payload:{email:string,isActive:boolean})=>{
-       const response = await axiosInstance.patch(updateIsActiveUrl,{email:payload.email})
-       return response.data // Only return the serializable part
-    }
+    async (payload: { email: string; isActive: boolean }) => {
+        const response = await axiosInstance.patch(updateIsActiveUrl, {
+            email: payload.email,
+        })
+        return response.data // Only return the serializable part
+    },
 )
 
 export const updateUser = createAsyncThunk(
     'adminUser/updateUser',
-    async(payload:{_id:string,rest:any})=>{
+    async (payload: { _id: string; rest: any }) => {
         // return await axiosInstance.patch(updateUserUrl,{_id:payload._id, ...payload.rest})
-        const result = await axiosInstance.patch(updateUserUrl,{_id:payload._id, ...payload.rest})
+        const result = await axiosInstance.patch(updateUserUrl, {
+            _id: payload._id,
+            ...payload.rest,
+        })
         return result.data.data
-    }
+    },
 )
 
 export const resetPassword = createAsyncThunk(
     'adminUser/resetPassword',
-    async(payload:{email:string,newPassword:string})=>{
-        const result = await axiosInstance.post(resetPasswordUrl,{email:payload.email,newPassword:payload.newPassword})
+    async (payload: { email: string; newPassword: string }) => {
+        const result = await axiosInstance.post(resetPasswordUrl, {
+            email: payload.email,
+            newPassword: payload.newPassword,
+        })
         return result.data // Only return the serializable part
-    }
+    },
 )
 
 export const addUser = createAsyncThunk(
     'adminUSer/addUser',
-    async(payload:{email:string,name:string,password:string})=>{
-        const result = await axiosInstance.post(addUserUrl,{email:payload.email,name:payload.name,password:payload.password})
-        console.log("Add NEW USer")
+    async (payload: { email: string; name: string; password: string }) => {
+        const result = await axiosInstance.post(addUserUrl, {
+            email: payload.email,
+            name: payload.name,
+            password: payload.password,
+        })
+        console.log('Add NEW USer')
         return result.data
-    }
+    },
 )
 
 const userSlice = createSlice({
@@ -79,7 +94,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         resetUserState: () => {
-            return initialState;
+            return initialState
         },
     },
     extraReducers(builder) {
@@ -98,16 +113,16 @@ const userSlice = createSlice({
             state.status = 'failed'
             state.error = action.error.message
         })
-        builder.addCase(addUser.fulfilled,(state,action)=>{
-            state.status='succeeded'
+        builder.addCase(addUser.fulfilled, (state, action) => {
+            state.status = 'succeeded'
             state.users.push(action.payload.data)
         })
     },
 })
 
 export const selectAllUsers = (state: RootState) => state.users.users
-export const userStatus = (state:RootState) => state.users.status
+export const userStatus = (state: RootState) => state.users.status
 export const userError = (state: RootState) => state.users.error
 
-export const {resetUserState} = userSlice.actions
+export const { resetUserState } = userSlice.actions
 export default userSlice.reducer
