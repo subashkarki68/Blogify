@@ -75,7 +75,8 @@ const UserManagement = () => {
                     message: 'We cannot Register you in right now.',
                 })
             }
-            if (res?.error) alert('Email already exists')
+            if (res.meta.requestStatus === 'rejected')
+                alert('Email already exists')
         } catch (error: any) {
             console.error('error', error)
             if (error?.message.includes('500')) {
