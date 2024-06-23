@@ -53,6 +53,15 @@ const UserManagement = () => {
         }
     }, [users, dispatch])
 
+    useEffect(() => {
+        if (success.status) {
+            const timer = setTimeout(() => {
+                setSuccess((prev) => ({ ...prev, status: false }))
+            }, 1500)
+            return () => clearTimeout(timer)
+        }
+    }, [success, setSuccess])
+
     const handleRegister = async (data: any) => {
         const { REGISTER } = URLS
         const { email, name, password } = data
@@ -172,8 +181,8 @@ const UserManagement = () => {
                                     disabled={isSubmitting}
                                     type="submit"
                                 >
-                                    {!success ? (
-                                        ' Add User'
+                                    {!success.status ? (
+                                        'Add User'
                                     ) : (
                                         <CheckCheckIcon className="stroke-green-500" />
                                     )}
