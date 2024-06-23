@@ -8,19 +8,18 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { URLS } from '@/constants'
 import {
+    addUser,
     fetchUsers,
     selectAllUsers,
     userStatus,
 } from '@/redux/slices/admin/userSlice'
 import { AppDispatch } from '@/redux/store'
-import { axiosInstance } from '@/utils/api'
 import { CheckCheckIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { RegisterPayload, SuccessFailureStatus } from '../userflow/Register'
+import { SuccessFailureStatus } from '../userflow/Register'
 import UserCard from './components/UserCard'
 
 const UserManagement = () => {
@@ -37,21 +36,12 @@ const UserManagement = () => {
         status: false,
         message: '',
     })
-    const [payload, setPayload] = useState<RegisterPayload>({
-        email: '',
-        password: '',
-        name: '',
-    })
 
-    console.log(setPayload)
-    console.log(payload)
     console.log(failure)
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchUsers({ limit: 10, page: 1 }))
-        }
-    }, [users, dispatch])
+        if (status === 'idle') dispatch(fetchUsers({ limit: 200, page: 1 }))
+    }, [])
 
     useEffect(() => {
         if (success.status) {
@@ -63,17 +53,13 @@ const UserManagement = () => {
     }, [success, setSuccess])
 
     const handleRegister = async (data: any) => {
-        const { REGISTER } = URLS
         const { email, name, password } = data
+        const res = await dispatch(addUser({ email, name, password }))
+        console.log('REs from Des', res)
         try {
             setIsSubmitting(true)
-            const res = await axiosInstance.post(REGISTER, {
-                email,
-                name,
-                password,
-            })
-            if (res.status === 200) {
-                if (res.data.data) {
+            if (res.meta.requestStatus === 'fulfilled') {
+                if (res?.payload?.data) {
                     setSuccess({
                         status: true,
                         message: 'Registration Successful',

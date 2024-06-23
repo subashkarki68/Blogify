@@ -67,10 +67,10 @@ export const resetPassword = createAsyncThunk(
 
 export const addUser = createAsyncThunk(
     'adminUSer/addUser',
-    async(payload)=>{
-        const result = await axiosInstance.post(addUserUrl,payload)
-        console.log("Add NEW USer",result)
-        return result
+    async(payload:{email:string,name:string,password:string})=>{
+        const result = await axiosInstance.post(addUserUrl,{email:payload.email,name:payload.name,password:payload.password})
+        console.log("Add NEW USer")
+        return result.data
     }
 )
 
@@ -97,6 +97,10 @@ const userSlice = createSlice({
         builder.addCase(fetchUsers.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
+        })
+        builder.addCase(addUser.fulfilled,(state,action)=>{
+            state.status='succeeded'
+            state.users.push(action.payload.data)
         })
     },
 })
