@@ -3,8 +3,9 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
-const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const Logger = require("./config/logger");
+const morganMiddleware = require("./config/morganMiddleware");
 
 const indexRouter = require("./routes");
 const PORT = Number(process.env.PORT || 8000);
@@ -17,12 +18,12 @@ const corsOptions = {
 };
 
 mongoose.connect(process.env.DB_URL).then(() => {
-  console.log("Database connected");
+  Logger.info("Database connected");
 });
 
 app.use(cookieParser(CookieSecret));
 app.use(cors(corsOptions));
-app.use(morgan("dev"));
+app.use(morganMiddleware);
 app.use(express.json()); // to allow json as request body
 
 //Check if static folder is present
@@ -34,7 +35,7 @@ const dirPath = path.join(__dirname, "public/images/users");
 
 // Check if the directory exists, if not, create it
 if (!fs.existsSync(dirPath)) {
-  console.log(`Directory ${dirPath} does not exist, creating one...`);
+  Logger.info(`Directory ${dirPath} does not exist, creating one...`);
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
@@ -44,7 +45,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Origin",
     process.env.NODE_ENV === "production"
       ? "https://blogify.ruchirajkarki.com.np"
-      : "http://localhost:5173",
+      : "http://localhost:5173"
   );
   next();
 });
@@ -57,5 +58,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`application is running at port ${PORT}`);
+  Logger.info(`application is running at port ${PORT}`);
 });

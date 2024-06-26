@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
       "-",
       Date.now(),
       ".",
-      file.originalname.split(".").pop(),
+      file.originalname.split(".").pop()
     );
     cb(null, imageName);
   },
@@ -61,7 +61,7 @@ router.patch(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 //Update Profile (Admin)
@@ -76,7 +76,7 @@ router.patch(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 // REGISTER USER
@@ -94,13 +94,13 @@ router.post(
     } catch (e) {
       next(e);
     }
-  },
+  }
 );
 
 // LOGIN USER
 router.post("/login", login, async (req, res, next) => {
   const expiryTime = new Date(
-    Date.now() + parseInt(process.env.JWT_DURATION) * 60 * 60 * 24 * 1000,
+    Date.now() + parseInt(process.env.JWT_DURATION) * 60 * 60 * 24 * 1000
   );
   try {
     const result = await userController.login(req.body);
@@ -165,7 +165,7 @@ router.post(
     } catch (e) {
       next(e);
     }
-  },
+  }
 );
 
 router.post("/reset-password", checkRole(["admin"]), async (req, res, next) => {
@@ -197,7 +197,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 // UPDATE MY PROFILE
@@ -208,13 +208,13 @@ router.get(
     try {
       const result = await userController.updateProfile(
         req.currentUser,
-        req.body,
+        req.body
       );
       res.json({ data: result });
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 //Upload profile image
@@ -232,13 +232,13 @@ router.post(
       }
       const result = await userController.updateProfileImage(
         req.currentUser,
-        req.body.profileImage,
+        req.body.profileImage
       );
       res.json({ data: result });
     } catch (e) {
       next(e);
     }
-  },
+  }
 );
 
 router.post("/logout", checkRole(["admin", "user"]), (req, res) => {

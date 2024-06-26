@@ -5,6 +5,7 @@ const {
   generateAccessToken,
   generateRandomToken,
 } = require("../../utils/token");
+const Logger = require("../../config/logger");
 // create
 const create = (payload) => {
   return userModel.create(payload);
@@ -55,7 +56,7 @@ const list = async (search, page = 1, limit = 1) => {
           $arrayElemAt: ["$metadata.total", 0],
         },
       },
-    },
+    }
   );
   const result = await userModel.aggregate(query);
   return {
@@ -82,7 +83,7 @@ const generateEmailToken = async (email, emailVerifyToken) => {
   await mail(
     email,
     "Verify your email",
-    `Your email verification token is ${emailVerifyToken}`,
+    `Your email verification token is ${emailVerifyToken}`
   );
 };
 const verifyEmailToken = async ({ email, emailVerifyToken }) => {
@@ -97,7 +98,7 @@ const verifyEmailToken = async ({ email, emailVerifyToken }) => {
   // user update with new password
   const updatedUser = await userModel.updateOne(
     { email },
-    { emailVerified: true, emailVerifyToken: "" },
+    { emailVerified: true, emailVerifyToken: "" }
   );
   if (!updatedUser) throw new Error("Process failed. Try again later");
   // return success message
@@ -183,7 +184,7 @@ const changeForgottenPassword = async (payload) => {
   // user update with new password
   const updatedUser = await userModel.updateOne(
     { email },
-    { password: hashPassword(newPassword), token: "" },
+    { password: hashPassword(newPassword), token: "" }
   );
   if (!updatedUser) throw new Error("Process failed. Try again later");
   // return success message
@@ -200,7 +201,7 @@ const changePassword = async (payload) => {
   if (!isValidOldPw) throw new Error("Password didn't match");
   const updateUser = await userModel.updateOne(
     { email },
-    { password: hashPassword(newPassword) },
+    { password: hashPassword(newPassword) }
   );
   if (!updateUser) throw new Error("Try again later");
   return "Password changed successfully";
@@ -213,7 +214,7 @@ const resetPassword = async (payload) => {
   if (!user) throw new Error("User not found");
   const updateUser = await userModel.updateOne(
     { email },
-    { password: hashPassword(newPassword) },
+    { password: hashPassword(newPassword) }
   );
   if (!updateUser) throw new Error("Try again later");
   return "Password reset successfully";
@@ -224,12 +225,12 @@ const updateProfileImage = async (userId, profileImage) => {
   try {
     const user = await userModel.findById(userId).select("-password");
     if (!user) throw new Error("User not found");
-    console.log("Profile Image", profileImage);
+    Logger.info("Profile Image", profileImage);
     user.pictureUrl = profileImage;
     await user.save();
     return { pictureUrl: profileImage };
   } catch (error) {
-    console.error("Error updating profile image:", error);
+    Logger.error("Error updating profile image:", error);
     throw error;
   }
 };
@@ -237,14 +238,14 @@ const updateProfileImage = async (userId, profileImage) => {
 const verifyUserEmail = async (email, status) => {
   try {
     const user = await userModel.findOne({ email }).select("-password");
-    console.log("email - verification status", email, status);
+    Logger.info("email - verification status", email, status);
     if (!user) throw new Error("User Not Found");
     user.emailVerified = status;
     await user.save();
-    console.log("User", user);
+    Logger.info("User", user);
     return user.emailVerified;
   } catch (error) {
-    console.error("Error Veryfying email", error);
+    Logger.error("Error Veryfying email", error);
     throw error;
   }
 };
