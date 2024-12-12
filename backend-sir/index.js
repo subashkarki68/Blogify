@@ -44,15 +44,15 @@ if (!fs.existsSync(dirPath)) {
 }
 
 app.use("/static", express.static("public"));
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    process.env.NODE_ENV === "production"
-      ? "https://blogify.ruchirajkarki.com.np"
-      : "http://localhost:5173"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     process.env.NODE_ENV === "production"
+//       ? "https://blogify.ruchirajkarki.com.np"
+//       : "http://localhost:5173"
+//   );
+//   next();
+// });
 
 app.use("/", indexRouter);
 
